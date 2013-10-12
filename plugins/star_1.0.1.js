@@ -15,11 +15,11 @@ $.fn.NM_Stars = function(config) {
 	// NM star default config
 	var defaults = {
 		scoreLevel : {
-			"1" : "很差",
-			"2" : "差",
-			"3" : "还行",
-			"4" : "好",
-			"5" : "非常好"
+			"1" : "Worst",
+			"2" : "Bad",
+			"3" : "OK",
+			"4" : "Good",
+			"5" : "Best"
 		},
 		starWidth : 17,
 		// starInnerClassName : "starsInner",
