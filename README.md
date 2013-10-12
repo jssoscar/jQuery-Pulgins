@@ -3,7 +3,7 @@ jQuery-Pulgins
 
 My jQuery Pulgins For Daily Work
 
-¢Ù.  star.js
+==== star.js ====
 
 Description	:	jQuery plugin for star
 
