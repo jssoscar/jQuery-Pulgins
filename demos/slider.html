@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Slider</title>
+		<script type="text/javascript" src="jquery-1.9.1.min.js"></script>
+		<script type="text/javascript" src="slider_1.0.js"></script>
+		<style>
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			.slider{
+				width: 228px;
+				margin: 50px auto;
+			}
+			.sliderBlock{
+				width: 228px;
+				height: 389px;
+				overflow: hidden;
+			}
+			.sliderBlock li{
+				float : left;
+				width: 228px;
+				height: 389px;
+				list-style: none
+			}
+			.sliderContent{
+				margin: 20px auto;
+			}
+			.sliderContent a{
+				display: inline-block;
+				height: 20px;
+				line-height: 20px;
+				padding: 0 5px;
+				text-align: center;
+				margin: 0 5px;
+				text-decoration: none;
+				border: 1px solid #DDDDDD;
+				background-color: #F8FBFC
+			}
+			.sliderContent a.current{
+				background-color : #DDDDDD;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="slider">
+			<div class="sliderBlock">
+				<ul>
+					<li>
+						<img src="slide1.png" width="228" height="389">
+					</li>
+					<li>
+						<img src="slide2.png" width="228" height="389">
+					</li>
+					<li>
+						<img src="slide3.png" width="228" height="389">
+					</li>
+				</ul>
+			</div>
+			<div class="sliderContent">
+			</div>
+		</div>
+	</body>
+	<script>
+		$(function(){
+			$(".slider").slider({
+				cycle : true,
+				nav : true,
+				navContainer : $(this).find('.sliderContent'),
+				currentNavClass : "current",
+				eventType : "mouseover"
+			});
+		});
+	</script>
+</html>
