@@ -5,7 +5,7 @@
  * Description	jQuery plugin for slider
  * Since		1.0
  */
-$.fn.slider = function(config) { 
+$.fn.slider = function(config) {
 	// Slider configuration
 	var Slider = {
 		DIRECTIONS : {
@@ -151,9 +151,6 @@ $.fn.slider = function(config) {
 	 * @param {Object} sliderController : the slider controller
 	 */
 	function autoSlide(obj, sliderController) {
-		
-			
-				console.log(sliderController.count + '| b');
 		sliderController.sliderFinished = false;
 		var autoCss = {}, direction = 'margin-' + options.direction;
 		autoCss[direction] = getMarginPosition(sliderController);
@@ -164,7 +161,6 @@ $.fn.slider = function(config) {
 				$(this).css(direction, "0px");
 			}
 			if(options.nav){
-				console.log(sliderController.count + '| c');
 				options.navContainer.find("a:eq("+sliderController.count+")").addClass(options.currentNavClass).siblings().removeClass(options.currentNavClass);
 			}
 		});
