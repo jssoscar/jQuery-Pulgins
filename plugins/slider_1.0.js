@@ -74,7 +74,7 @@ $.fn.slider = function(config) {
 				}
 				options.navContainer.html(navContent.join(""));
 				if (mouseoverEvent(options)) {
-					options.navContainer.find("a").bind("mouseover", function() {
+					options.navContainer.find("a").bind(options.eventType, function() {
 						stopSlider(sliderController);
 						if (sliderController.sliderFinished) {
 							sliderController.count = $(this).index();
