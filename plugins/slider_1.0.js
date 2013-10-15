@@ -32,7 +32,7 @@ $.fn.slider = function(config) {
 	};
 	var options = extendConfig(defaultCfg, config);
 
-	// Slider handler
+	// Handler for the slider plugin
 	this.each(function() {
 		var _this = $(this), li = _this.find("li"), sliderController = {
 			count : 0,
@@ -76,19 +76,19 @@ $.fn.slider = function(config) {
 				if (mouseoverEvent(options)) {
 					options.navContainer.find("a").bind("mouseover", function() {
 						stopSlider(sliderController);
-						if(sliderController.sliderFinished){
+						if (sliderController.sliderFinished) {
 							sliderController.count = $(this).index();
 							autoSlide(_this, sliderController);
 						}
 					});
 					options.navContainer.find("a").bind(Slider.EVENTS.O, function(event) {
-						if(sliderController.sliderFinished){
-						  startSlider(_this, sliderController);
+						if (sliderController.sliderFinished) {
+							startSlider(_this, sliderController);
 						}
 					});
-				}else if (clickEvent(options)) {
+				} else if (clickEvent(options)) {
 					options.navContainer.find("a").bind(options.eventType, function() {
-						updateNavButton($(this),_this,sliderController);
+						updateNavButton($(this), _this, sliderController);
 					});
 				}
 			}
@@ -101,24 +101,24 @@ $.fn.slider = function(config) {
 	 * .	Deal with the animate interval
 	 * .	Deal with the slider direction
 	 * .	Deal with the slider navigator button event handler
-	 * 
+	 *
 	 * @param {Object} defaultCfg : slider default config
 	 * @param {Object} config : customer config
 	 */
 	function extendConfig(defaultCfg, config) {
 		var options = $.extend(defaultCfg, config);
-		
+
 		// Deal with the animate interval
 		options.interval = options.interval * 1e3;
 		options.speed = options.speed * 1e3;
-		
+
 		// Deal with the slider direction
 		if (!slide2Left(options) && !slide2Top(options)) {
 			options.direction = Slider.DIRECTIONS.L;
 		}
-		
+
 		// Deal with the slider navigator button event handler
-		if(clickEvent(options) && !mouseoverEvent(options)){
+		if (clickEvent(options) && !mouseoverEvent(options)) {
 			options.eventType = Slider.EVENTS.C;
 		}
 		return options;
@@ -126,7 +126,7 @@ $.fn.slider = function(config) {
 
 	/**
 	 * Start the slider : start to animate the DOM element
-	 * 
+	 *
 	 * @param {Object} obj : the DOM element for slide
 	 * @param {Object} sliderController : the slider controller
 	 */
@@ -134,10 +134,10 @@ $.fn.slider = function(config) {
 		sliderController.slider = setInterval(function() {
 			sliderController.count++;
 			/*
-			if (sliderController.count === sliderController.li_length) {
-							sliderController.count = 0;
-						}*/
-			
+			 if (sliderController.count === sliderController.li_length) {
+			 sliderController.count = 0;
+			 }*/
+
 			autoSlide(obj, sliderController);
 		}, options.interval);
 	}
@@ -146,7 +146,7 @@ $.fn.slider = function(config) {
 	 * Slide automatically
 	 * .	Animate the slider block
 	 * .	Switch the navigator button if it exists
-	 * 
+	 *
 	 * @param {Object} obj : the slider object
 	 * @param {Object} sliderController : the slider controller
 	 */
@@ -160,17 +160,15 @@ $.fn.slider = function(config) {
 				sliderController.count = 0;
 				$(this).css(direction, "0px");
 			}
-			if(options.nav){
-				options.navContainer.find("a:eq("+sliderController.count+")").addClass(options.currentNavClass).siblings().removeClass(options.currentNavClass);
+			if (options.nav) {
+				options.navContainer.find("a:eq(" + sliderController.count + ")").addClass(options.currentNavClass).siblings().removeClass(options.currentNavClass);
 			}
 		});
-		
-		
 	}
 
 	/**
 	 * Stop slider : clear the slider interval
-	 * 
+	 *
 	 * @param {Object} sliderController : the slider controller
 	 */
 	function stopSlider(sliderController) {
@@ -179,7 +177,7 @@ $.fn.slider = function(config) {
 
 	/**
 	 * Judgement for whether the slider is scroll to left
-	 * 
+	 *
 	 * @param {Object} options : the slider parameter configuration
 	 */
 	function slide2Left(options) {
@@ -188,7 +186,7 @@ $.fn.slider = function(config) {
 
 	/**
 	 * Judgement for whether the slider is scroll to top
-	 * 
+	 *
 	 * @param {Object} options : the slider parameter configuration
 	 */
 	function slide2Top(options) {
@@ -208,16 +206,16 @@ $.fn.slider = function(config) {
 	function mouseoverEvent(options) {
 		return options.eventType === Slider.EVENTS.M;
 	}
-	
+
 	/**
 	 * Update the navigator buton status
-	 * 
+	 *
 	 * @param {Object} currentNavBtn : current navigator button
 	 * @param {Object} root : the root DOM element.Here,it's the caller element.
 	 * @@param {Object} sliderController : the slider controller
 	 */
-	function updateNavButton(currentNavBtn,root,sliderController){
-		if(clickEvent(options)){
+	function updateNavButton(currentNavBtn, root, sliderController) {
+		if (clickEvent(options)) {
 			sliderController.count = currentNavBtn.index();
 			autoSlide(root, sliderController);
 			currentNavBtn.addClass(options.currentNavClass).siblings().removeClass(options.currentNavClass);
@@ -226,7 +224,7 @@ $.fn.slider = function(config) {
 
 	/**
 	 * Get slider margin position : acoording to the slider direction , get margin-left value or margin-top value
-	 * 
+	 *
 	 * @param {Object} options : the slider config options
 	 * @param {Object} sliderController : slider controller
 	 */
@@ -237,4 +235,4 @@ $.fn.slider = function(config) {
 			return -sliderController.li_height * options.rollMult * sliderController.count;
 		}
 	}
-}; 
+};
