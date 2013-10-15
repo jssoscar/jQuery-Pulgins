@@ -5,7 +5,7 @@
  * Description	jQuery plugin for slider
  * Since		1.0
  */
-$.fn.slider = function(config) {
+$.fn.slider = function(config) { 
 	// Slider configuration
 	var Slider = {
 		DIRECTIONS : {
