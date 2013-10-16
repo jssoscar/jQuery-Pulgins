@@ -1,9 +1,13 @@
 /**
  * Author		jssoscar
  * Date			2013-10-15 14:30:26
- * Version		1.0
- * Description		jQuery plugin for slider
+ * Version		1.0.1
+ * Description	jQuery plugin for slider
  * Since		1.0
+ * Update		2013-10-16 10:44:21
+ * Note			. Fixed the bug for mouseout event
+ * 				. Fixed the bug for the clone first li node
+ * 				. Optimize the code for find the ul node
  */
 $.fn.slider = function(config) {
 	// The slider default configuration
@@ -30,13 +34,13 @@ $.fn.slider = function(config) {
 		eventType : Slider.EVENTS.C,
 		currentNavClass : null
 	};
-	
+
 	// The slider configuration
 	var options = extendConfig(defaultCfg, config);
 
 	// Handler for the slider plugin
 	this.each(function() {
-		var _this = $(this), li = _this.find("li"), sliderController = {
+		var _this = $(this), ul = _this.find("ul"), li = _this.find("li"), sliderController = {
 			count : 0,
 			li_length : li.length,
 			li_width : li.width(),
@@ -52,15 +56,14 @@ $.fn.slider = function(config) {
 
 		// Rolling cycle
 		if (options.cycle) {
-			// sliderController.li_length++;
-			_this.find("ul").append($("ul li:first-child").clone());
+			ul.append(li.first().clone());
 		}
 
 		// Calculate the slider parent node width and height attribute
 		if (slide2Left(options)) {
-			_this.find("ul").width((sliderController.li_length + 1) * sliderController.li_width).height(sliderController.li_height);
+			ul.width((sliderController.li_length + 1) * sliderController.li_width).height(sliderController.li_height);
 		} else if (slide2Top(options)) {
-			_this.find("ul").width(sliderController.li_width).height((sliderController.li_length + 1) * sliderController.li_height);
+			ul.width(sliderController.li_width).height((sliderController.li_length + 1) * sliderController.li_height);
 		}
 
 		// Generate navigator content
@@ -80,11 +83,11 @@ $.fn.slider = function(config) {
 						updateNavButton($(this), _this, sliderController);
 					});
 					options.navContainer.find("a").bind(Slider.EVENTS.O, function() {
-							startSlider(_this, sliderController);
+						startSlider(_this, sliderController);
 					});
 				} else if (clickEvent(options)) {
 					options.navContainer.find("a").bind(options.eventType, function() {
-						if (sliderController.sliderFinished){
+						if (sliderController.sliderFinished) {
 							updateNavButton($(this), _this, sliderController);
 						}
 					});
@@ -188,7 +191,7 @@ $.fn.slider = function(config) {
 
 	/**
 	 * Navigator button click event handler
-	 * 
+	 *
 	 * @param {Object} options : the slider parameter configuration
 	 */
 	function clickEvent(options) {
@@ -197,7 +200,7 @@ $.fn.slider = function(config) {
 
 	/**
 	 * Navigator button mouseover event handler
-	 * 
+	 *
 	 * @param {Object} options : the slider parameter configuration
 	 */
 	function mouseoverEvent(options) {
@@ -216,7 +219,7 @@ $.fn.slider = function(config) {
 			sliderController.count = currentNavBtn.index();
 			autoSlide(root, sliderController);
 			currentNavBtn.addClass(options.currentNavClass).siblings().removeClass(options.currentNavClass);
-		}else if(mouseoverEvent(options)){
+		} else if (mouseoverEvent(options)) {
 			stopSlider(sliderController);
 			if (sliderController.sliderFinished) {
 				sliderController.count = currentNavBtn.index();
@@ -238,4 +241,4 @@ $.fn.slider = function(config) {
 			return -sliderController.li_height * options.rollMult * sliderController.count;
 		}
 	}
-};
+}; 
