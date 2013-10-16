@@ -2,11 +2,11 @@
  * Author		jssoscar
  * Date			2013-10-15 14:30:26
  * Version		1.0
- * Description	jQuery plugin for slider
+ * Description		jQuery plugin for slider
  * Since		1.0
  */
 $.fn.slider = function(config) {
-	// Slider configuration
+	// The slider default configuration
 	var Slider = {
 		DIRECTIONS : {
 			"L" : "left",
@@ -30,6 +30,8 @@ $.fn.slider = function(config) {
 		eventType : Slider.EVENTS.C,
 		currentNavClass : null
 	};
+	
+	// The slider configuration
 	var options = extendConfig(defaultCfg, config);
 
 	// Handler for the slider plugin
@@ -75,20 +77,16 @@ $.fn.slider = function(config) {
 				options.navContainer.html(navContent.join(""));
 				if (mouseoverEvent(options)) {
 					options.navContainer.find("a").bind(options.eventType, function() {
-						stopSlider(sliderController);
-						if (sliderController.sliderFinished) {
-							sliderController.count = $(this).index();
-							autoSlide(_this, sliderController);
-						}
+						updateNavButton($(this), _this, sliderController);
 					});
-					options.navContainer.find("a").bind(Slider.EVENTS.O, function(event) {
-						if (sliderController.sliderFinished) {
+					options.navContainer.find("a").bind(Slider.EVENTS.O, function() {
 							startSlider(_this, sliderController);
-						}
 					});
 				} else if (clickEvent(options)) {
 					options.navContainer.find("a").bind(options.eventType, function() {
-						updateNavButton($(this), _this, sliderController);
+						if (sliderController.sliderFinished){
+							updateNavButton($(this), _this, sliderController);
+						}
 					});
 				}
 			}
@@ -133,11 +131,6 @@ $.fn.slider = function(config) {
 	function startSlider(obj, sliderController) {
 		sliderController.slider = setInterval(function() {
 			sliderController.count++;
-			/*
-			 if (sliderController.count === sliderController.li_length) {
-			 sliderController.count = 0;
-			 }*/
-
 			autoSlide(obj, sliderController);
 		}, options.interval);
 	}
@@ -158,7 +151,7 @@ $.fn.slider = function(config) {
 			sliderController.sliderFinished = true;
 			if (options.cycle && sliderController.count === sliderController.li_length) {
 				sliderController.count = 0;
-				$(this).css(direction, "0px");
+				$(this).css(direction, "0");
 			}
 			if (options.nav) {
 				options.navContainer.find("a:eq(" + sliderController.count + ")").addClass(options.currentNavClass).siblings().removeClass(options.currentNavClass);
@@ -176,7 +169,7 @@ $.fn.slider = function(config) {
 	}
 
 	/**
-	 * Judgement for whether the slider is scroll to left
+	 * Judgement for whether the slider scroll to left
 	 *
 	 * @param {Object} options : the slider parameter configuration
 	 */
@@ -185,7 +178,7 @@ $.fn.slider = function(config) {
 	}
 
 	/**
-	 * Judgement for whether the slider is scroll to top
+	 * Judgement for whether the slider scroll to top
 	 *
 	 * @param {Object} options : the slider parameter configuration
 	 */
@@ -195,6 +188,8 @@ $.fn.slider = function(config) {
 
 	/**
 	 * Navigator button click event handler
+	 * 
+	 * @param {Object} options : the slider parameter configuration
 	 */
 	function clickEvent(options) {
 		return options.eventType === Slider.EVENTS.C;
@@ -202,6 +197,8 @@ $.fn.slider = function(config) {
 
 	/**
 	 * Navigator button mouseover event handler
+	 * 
+	 * @param {Object} options : the slider parameter configuration
 	 */
 	function mouseoverEvent(options) {
 		return options.eventType === Slider.EVENTS.M;
@@ -219,6 +216,12 @@ $.fn.slider = function(config) {
 			sliderController.count = currentNavBtn.index();
 			autoSlide(root, sliderController);
 			currentNavBtn.addClass(options.currentNavClass).siblings().removeClass(options.currentNavClass);
+		}else if(mouseoverEvent(options)){
+			stopSlider(sliderController);
+			if (sliderController.sliderFinished) {
+				sliderController.count = currentNavBtn.index();
+				autoSlide(root, sliderController);
+			}
 		}
 	}
 
