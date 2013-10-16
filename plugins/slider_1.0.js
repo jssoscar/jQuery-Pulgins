@@ -6,8 +6,8 @@
  * Since		1.0
  * Update		2013-10-16 10:44:21
  * Note			. Fixed the bug for mouseout event
- * 			. Fixed the bug for the clone first li node
- * 			. Optimize the code for find the ul node
+ * 				. Fixed the bug for the clone first li node
+ * 				. Optimize the code for find the ul node
  */
 $.fn.slider = function(config) {
 	// The slider default configuration
@@ -72,10 +72,10 @@ $.fn.slider = function(config) {
 				var navContent = [];
 				for (var i = 0; i < sliderController.li_length; i++) {
 					if (i === 0 && options.currentNavClass != null) {
-						navContent[i] = "<a href='javascprit:void(0);' class='" + options.currentNavClass + "'>" + (i + 1) + "</a>";
+						navContent[i] = "<a href='javascript:void(0);' class='" + options.currentNavClass + "'>" + (i + 1) + "</a>";
 						continue;
 					}
-					navContent[i] = "<a href='javascprit:void(0);'>" + (i + 1) + "</a>";
+					navContent[i] = "<a href='javascript:void(0);'>" + (i + 1) + "</a>";
 				}
 				options.navContainer.html(navContent.join(""));
 				if (mouseoverEvent(options)) {
@@ -87,9 +87,7 @@ $.fn.slider = function(config) {
 					});
 				} else if (clickEvent(options)) {
 					options.navContainer.find("a").bind(options.eventType, function() {
-						if (sliderController.sliderFinished) {
-							updateNavButton($(this), _this, sliderController);
-						}
+						updateNavButton($(this), _this, sliderController);
 					});
 				}
 			}
@@ -216,9 +214,11 @@ $.fn.slider = function(config) {
 	 */
 	function updateNavButton(currentNavBtn, root, sliderController) {
 		if (clickEvent(options)) {
-			sliderController.count = currentNavBtn.index();
-			autoSlide(root, sliderController);
-			currentNavBtn.addClass(options.currentNavClass).siblings().removeClass(options.currentNavClass);
+			if (sliderController.sliderFinished) {
+				sliderController.count = currentNavBtn.index();
+				autoSlide(root, sliderController);
+				currentNavBtn.addClass(options.currentNavClass).siblings().removeClass(options.currentNavClass);
+			}
 		} else if (mouseoverEvent(options)) {
 			stopSlider(sliderController);
 			if (sliderController.sliderFinished) {
