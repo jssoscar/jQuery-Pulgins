@@ -6,8 +6,8 @@
  * Since		1.0
  * Update		2013-10-16 10:44:21
  * Note			. Fixed the bug for mouseout event
- * 				. Fixed the bug for the clone first li node
- * 				. Optimize the code for find the ul node
+ * 			. Fixed the bug for the clone first li node
+ * 			. Optimize the code for find the ul node
  */
 $.fn.slider = function(config) {
 	// The slider default configuration
