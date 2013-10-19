@@ -79,14 +79,16 @@ $.fn.slider = function(config) {
 				}
 				options.navContainer.html(navContent.join(""));
 				if (mouseoverEvent(options)) {
-					options.navContainer.find("a").bind(options.eventType, function() {
-						updateNavButton($(this), _this, sliderController);
-					});
-					options.navContainer.find("a").bind(Slider.EVENTS.O, function() {
-						startSlider(_this, sliderController);
+					options.navContainer.find("a").bind({
+						"mouseover": function(){
+							updateNavButton($(this), _this, sliderController);
+						},
+						"mouseout" : function(){
+							startSlider(_this, sliderController);
+						}
 					});
 				} else if (clickEvent(options)) {
-					options.navContainer.find("a").bind(options.eventType, function() {
+					options.navContainer.find("a").bind(Slider.EVENTS.C, function() {
 						updateNavButton($(this), _this, sliderController);
 					});
 				}
