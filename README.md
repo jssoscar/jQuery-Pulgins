@@ -39,3 +39,13 @@ Note : . Add the slider animation mode : default is animation mode
        . Fixed the bug
 
        . Optimize the code
+
+==== map_1.0.js ====
+
+Description : jQuery plugin for the key & value object
+
+Version : 1.0
+
+Date : 2013-10-22 17:25:22
+
+Note : The first version for the map which deal with the key & value object
