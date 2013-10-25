@@ -93,8 +93,13 @@ $.fn.slider = function(config) {
 						}
 					});
 				} else if (clickEvent(options)) {
-					options.navContainer.find("a").bind(Slider.EVENTS.C, function() {
-						updateNavButton($(this), _this, sliderController);
+					options.navContainer.find("a").bind({
+						"click" : function(){
+							updateNavButton($(this), _this, sliderController);
+						},
+						"mouseout" : function() {
+							startSlider(_this, sliderController);
+						}
 					});
 				}
 			}
@@ -302,18 +307,10 @@ $.fn.slider = function(config) {
 	 * @param {Object} sliderController : the slider controller
 	 */
 	function updateNavButton(currentNavBtn, root, sliderController) {
-		if (clickEvent(options)) {
-			if (sliderController.sliderFinished) {
-				sliderController.count = currentNavBtn.index();
-				autoSlide(root, sliderController);
-				currentNavBtn.addClass(options.currentNavClass).siblings().removeClass(options.currentNavClass);
-			}
-		} else if (mouseoverEvent(options)) {
-			stopSlider(sliderController);
-			if (sliderController.sliderFinished) {
-				sliderController.count = currentNavBtn.index();
-				autoSlide(root, sliderController);
-			}
+		stopSlider(sliderController);
+		if (sliderController.sliderFinished) {
+			sliderController.count = currentNavBtn.index();
+			autoSlide(root, sliderController);
 		}
 	}
 
