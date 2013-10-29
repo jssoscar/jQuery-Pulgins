@@ -49,3 +49,13 @@ Version : 1.0
 Date : 2013-10-22 17:25:22
 
 Note : The first version for the map which deal with the key & value object
+
+==== backTop_1.0.js ====
+
+Description : jQuery plugin for back to top
+
+Version : 1.0
+
+Date : 2013-10-29 10:29:19
+
+Note : Support jQuery version : less than 1.9. From 1.9,jQuery remove the jQuery.browser() method.
