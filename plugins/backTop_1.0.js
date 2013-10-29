@@ -3,9 +3,7 @@
  * Date			2013-10-29 10:24:16
  * Description	jQuery plugin for back to top
  * Note			Support jQuery version : less than 1.9. From 1.9,jQuery remove the jQuery.browser() method.
- * Version		2.0
- * Added		. And hover class
- * 				. Bind hover event handler for the back top element
+ * Version		1.0
  */
 $(function() {
 	/**
@@ -33,8 +31,7 @@ $(function() {
 			controlHTML : "Top", // the back top control html
 			showMode : backTopConstant.Mode.F, // the back top show mode
 			offsetRight : 30, // back top element offset right distance
-			offsetBottom : 30, // back top element offset bottom distance,
-			hoverClass : ""  // back top element hover class
+			offsetBottom : 30 // back top element offset bottom distance
 		};
 
 		/**
@@ -98,14 +95,6 @@ $(function() {
 				$("body,html").animate({
 					scrollTop : 0
 				}, backTop.config.animateSpeed);
-			}).hover(function(){
-				if(backTop.config.hoverClass){
-					backTopHTML.addClass(backTop.config.hoverClass);
-				}
-			},function(){
-				if(backTop.config.hoverClass){
-					backTopHTML.removeClass(backTop.config.hoverClass);
-				}
 			}).html(backTop.config.controlHTML).appendTo($(document.body));
 
 			// Bind scroll event for the window
@@ -121,7 +110,7 @@ $(function() {
 				// Deal with the IE6
 				if (backTop.fixed()) {
 					backTopHTML.css({
-						top : $win.scrollTop() + $win.height() - backTopHTML.height() - backTop.config.offsetBottom
+						top : $win.scrollTop() + $win.height()
 					});
 				}
 			});
@@ -141,7 +130,5 @@ $(function() {
 			return options.mode === backTopConstant.Mode.F;
 		}
 	};
-	
-	// Define the global back top plugin
 	$.backTop = backTop;
 });
