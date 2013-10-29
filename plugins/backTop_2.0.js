@@ -1,6 +1,6 @@
 /**
  * Author		jssoscar
- * Date			2013-10-29 15:14:53
+ * Date			2013-10-29 10:24:16
  * Description	jQuery plugin for back to top
  * Note			Support jQuery version : less than 1.9. From 1.9,jQuery remove the jQuery.browser() method.
  * Version		2.0
@@ -106,7 +106,7 @@ $(function() {
 				if(backTop.config.hoverClass){
 					backTopHTML.removeClass(backTop.config.hoverClass);
 				}
-			}).html(backTop.config.controlHTML).appendTo($(document.body));
+			}).html(backTop.config.controlHTML).appendTo($(document.body)).hide();
 
 			// Bind scroll event for the window
 			$(window).bind("scroll", function() {
