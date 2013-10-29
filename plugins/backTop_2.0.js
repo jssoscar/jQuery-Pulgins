@@ -1,6 +1,6 @@
 /**
  * Author		jssoscar
- * Date			2013-10-29 10:24:16
+ * Date			2013-10-29 15:14:53
  * Description	jQuery plugin for back to top
  * Note			Support jQuery version : less than 1.9. From 1.9,jQuery remove the jQuery.browser() method.
  * Version		2.0
