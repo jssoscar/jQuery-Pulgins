@@ -108,7 +108,7 @@ $(function() {
 			$(window).bind("scroll", function() {
 				var $win = $(this);
 				// Deal with current scroll top distance
-				if ($win.scrollTop() < $(document.body).height() - $(window).height()) {
+				if ($win.scrollTop() < $(document.body).height() - $win.height()) {
 					backBottom.showEffect(backBottom.config) ? backBottomHTML.show(backBottom.config.showSpeed) : backBottomHTML.fadeIn(backBottom.config.showSpeed);
 				} else {
 					backBottom.showEffect(backBottom.config) ? backBottomHTML.hide(backBottom.config.showSpeed) : backBottomHTML.fadeOut(backBottom.config.showSpeed);
