@@ -121,8 +121,8 @@ $.fn.slider = function(config) {
 
 		// Deal with the animate interval
 		if (options.speed >= options.interval) {
-			options.interval = defaultCfg.interval;
-			options.speed = defaultCfg.speed;
+			options.interval = 5;
+			options.speed = 1;
 		}
 		options.interval = options.interval * 1e3;
 		options.speed = options.speed * 1e3;
