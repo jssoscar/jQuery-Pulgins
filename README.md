@@ -59,3 +59,13 @@ Version : 1.0
 Date : 2013-10-29 10:29:19
 
 Note : Support jQuery version : less than 1.9. From 1.9,jQuery remove the jQuery.browser() method.
+
+==== backBottom_2.0.js ====
+
+Description : jQuery plugin for back to bottom
+
+Version : 1.0
+
+Date : 2013-10-29 17:32:59
+
+Note : Support jQuery version : less than 1.9. From 1.9,jQuery remove the jQuery.browser() method.
