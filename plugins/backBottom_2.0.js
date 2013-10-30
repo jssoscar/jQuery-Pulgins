@@ -18,7 +18,7 @@ $(function() {
 	/**
 	 * Define the back bottom object
 	 *
-	 * @param {Object} config : the back top configuration
+	 * @param {Object} config : the back bottom configuration
 	 */
 	function backBottom(config) {
 		var defaultCfg = {
@@ -71,7 +71,7 @@ $(function() {
 	 */
 	backBottom.prototype = {
 		/**
-		 * Initialize the back top object
+		 * Initialize the back backBottom object
 		 *
 		 * . Generate the back bottom content
 		 * . Deal with the back bottom element style
