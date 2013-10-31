@@ -1,8 +1,8 @@
 /**
  * Author		jssoscar
  * Date			2013-10-29 17:26:34
- * Description	jQuery plugin for go bottom
- * Version		1.0
+ * Description		jQuery plugin for go bottom
+ * Version		2.0
  */
 $(function() {
 	/**
@@ -151,5 +151,6 @@ $(function() {
 		}
 	};
 
+	// Define the global go bottom plugin
 	$.goBottom = goBottom;
 }); 
