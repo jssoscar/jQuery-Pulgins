@@ -60,12 +60,30 @@ Date : 2013-10-29 10:29:19
 
 Note : Support jQuery version : less than 1.9. From 1.9,jQuery remove the jQuery.browser() method.
 
+==== backTop_2.0.js ====
+
+Description : jQuery plugin for back to top
+
+Version : 2.0
+
+Date : 2013-10-29 19:29:01
+
+Note : Support jQuery version : less than 1.9. From 1.9,jQuery remove the jQuery.browser() method.
+
+Added : . Add Hover class for the back top element
+
+	. Bind Hover event for the back top element to deal the hover class
+
+	. Fixed the bug
+
+	. Optimize the code
+
 ==== goBottom_2.0.js ====
 
 Description : jQuery plugin for go bottom
 
-Version : 1.0
+Version : 2.0
 
-Date : 2013-10-29 17:32:59
+Date : 2013-10-31 11:55:52
 
 Note : Support jQuery version : less than 1.9. From 1.9,jQuery remove the jQuery.browser() method.
