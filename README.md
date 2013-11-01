@@ -87,3 +87,13 @@ Version : 2.0
 Date : 2013-10-31 11:55:52
 
 Note : Support jQuery version : less than 1.9. From 1.9,jQuery remove the jQuery.browser() method.
+
+==== tabs_1.0.js ====
+
+Description : jQuery plugin for tabs
+
+Version : 1.0
+
+Date : 2013-10-31 11:55:52
+
+Note : The first version jQuery plugin for tabs.
