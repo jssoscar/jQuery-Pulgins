@@ -18,6 +18,18 @@ jQuery.fn.tabs = function(config){
 		Mode : {
 			S : "show",
 			F : "fade"
+		},
+		isClick : function (config){
+			return config.eventType === this.Events.C;
+		},
+		isMouseover : function (config){
+			return config.eventType === this.Events.M;
+		},
+		showEffect : function (config){
+			return config.mode === this.Mode.S;
+		},
+		fadeEffect : function (config){
+			return config.mode === this.Mode.F;
 		}
 	},defaultCfg = {
 		eventType : Tabs.Events.C, // the tabs event type
@@ -96,7 +108,7 @@ jQuery.fn.tabs = function(config){
 	 */
 	function switcher(tabsController){
 		tabsController.finished = false;
-		if(showEffect(defaultCfg)){
+		if(Tabs.showEffect(defaultCfg)){
 			defaultCfg.tabContent.hide();
 			$(defaultCfg.tabContent.get(tabsController.count)).show(defaultCfg.speed,function(){
 				tabsController.finished = true;
@@ -128,7 +140,7 @@ jQuery.fn.tabs = function(config){
 		$.extend(defaultCfg,custom);
 		
 		// Deal with the tab event
-		if(isClick(defaultCfg) && isMouseover(defaultCfg)){
+		if(Tabs.isClick(defaultCfg) && Tabs.isMouseover(defaultCfg)){
 			defaultCfg.eventType = Tabs.Events.C;
 		}
 		
@@ -144,42 +156,8 @@ jQuery.fn.tabs = function(config){
 		}
 		defaultCfg.speed = defaultCfg.speed * 1e3;
 		
-		if(!showEffect(defaultCfg) && !fadeEffect(defaultCfg)){
+		if(!Tabs.showEffect(defaultCfg) && !Tabs.fadeEffect(defaultCfg)){
 			defaultCfg.mode = Tabs.Mode.S;
 		}
-	}
-	
-	/**
-	 * Click event 
- 	 * @param {Object} config : configuration for the tab plugin
-	 */
-	function isClick(config){
-		return config.eventType === Tabs.Events.C;
-	}
-	
-	/**
-	 * Mouseover event
-	 * 
- 	 * @param {Object} config : configuration for the tab plugin
-	 */
-	function isMouseover(config){
-		return config.eventType === Tabs.Events.M;
-	}
-	
-	/**
-	 * Show mode
-	 * 
- 	 * @param {Object} config : configuration for the tab plugin
-	 */
-	function showEffect(config){
-		return config.mode === Tabs.Mode.S;
-	}
-	
-	/**
-	 * Fadein mode 
- 	 * @param {Object} config : configuration for the tab plugin
-	 */
-	function fadeEffect(config){
-		return config.mode === Tabs.Mode.F;
 	}
 };
