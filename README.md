@@ -101,3 +101,11 @@ Note : . Add the current class support for the tab element
        . Optimize the tab display effect code
 
        . Fixed the bug
+
+==== autoLoad_1.0.js ====
+
+Description : jQuery plugin for auto load
+
+Version : 1.0
+
+Date : 2013-11-6 17:16:07
