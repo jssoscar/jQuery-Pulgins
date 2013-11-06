@@ -166,6 +166,10 @@ jQuery.fn.tabs = function(config){
  	 * @param {Object} tabsController : the tab controller
 	 */
 	function switcher(obj,tabsController){
+		if(tabsController.count === defaultCfg.classIndex){
+			return;
+		}
+		
 		tabsController.finished = false;
 		
 		if(defaultCfg.switchClass){
