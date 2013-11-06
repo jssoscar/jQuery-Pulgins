@@ -2,13 +2,13 @@
  * Author		jssoscar
  * Date			2013-10-23 13:00:20
  * Version		1.0
- * Description		jQuery plugin for tabs
+ * Description	jQuery plugin for tabs
  * 
  * Version		1.0.2
  * Date			2013-11-5 14:12:55
  * Note			. Add the current class support for the tab element
- * 			. Optimize the tab display effect code
- * 			. Fixed the bug
+ * 				. Optimize the tab display effect code
+ * 				. Fixed the bug
  * 				
  */
 /**
@@ -43,16 +43,16 @@ jQuery.fn.tabs = function(config){
 		auto : false, // auto switch the tabs
 		interval : 5, // the interval time. The value represents seconds
 		speed : 0, // the switch speed. The value represents seconds
-		tabContent : null, // the tab content
+		tabContent : null,
 		currentClass : {
-		} // current tab element class
+		}
 	},$this = $(this);
 	
 	// Extend the default configuration
 	extendCfg(defaultCfg,config);
 	
 	// Define the tab display effect
-	$.fn.tabEffect = !Tabs.showEffect(defaultCfg) ? $.fn.show : $.fn.fadeIn;
+	$.fn.tabEffect = Tabs.showEffect(defaultCfg) ? $.fn.show : $.fn.fadeIn;
 	
 	// Deal with the tabs element
 	$this.each(function(){
