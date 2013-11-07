@@ -108,4 +108,6 @@ Description : jQuery plugin for auto load
 
 Version : 1.0
 
-Date : 2013-11-6 17:16:07
+Date : 2013-11-7 16:14:00
+
+Note : Current version not support cross domain load content.
