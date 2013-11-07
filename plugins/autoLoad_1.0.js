@@ -2,8 +2,11 @@
  * Author		jssoscar
  * Date			2013-11-5 18:34:24
  * Version		1.0
- * Description	jQuery plugin for auto load
- * Note			For the request to load content,
+ * Description	jQuery plugin for auto load : For the request to load content,generally use the GET to query data.
+ * 				Here, the first version only Support the GET to query the content.
+ * Note			. Only support GET to load content
+ * 				. Cross domain load data not support
+ * 				. The request count name has been fixed.If want to use this plugin,the configuration 'ajaxData' must has the attribute 'counter'
  */
 
 $(function() {
@@ -62,7 +65,7 @@ $(function() {
 				},
 				dataAttribute : "content",
 				ajaxData : {
-					loadNum : 0
+					counter : 0
 				}
 			};
 			this.extend(config,container);
