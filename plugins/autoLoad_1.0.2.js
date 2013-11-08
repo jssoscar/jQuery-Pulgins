@@ -93,6 +93,10 @@ $(function() {
 	 * 
 	 * load : load the content
 	 * 
+	 * ajaxSuccess : success to load the content asynchronous
+	 * 
+	 * ajaxError : fail to load content asynchronous
+	 * 
 	 * validateInt : validate the integer
 	 */
 	autoLoad.prototype = {
@@ -159,23 +163,11 @@ $(function() {
 					data : this.options.ajaxData,
 					dataType : "json",
 					success : function(data){
-						// Validate the data
-						if(data || data.length<=0){
-							return;
-						}
-						
-						// Append the loaded content to the content container
-						$(data[this.options.dataAttribute]).hide().appendTo(container).autoLoadEffect(this.options.speed);
-						
-						// finish to load the content
-						this.options.loadFinished = true;
+						//Deal with the data
+						this.ajaxSuccess(data,container);
 					},
 					error : function(XMLHttpRequest, textStatus, errorThrown){
-						// Update the ajax counter
-						this.options.ajaxData.counter--;
-						
-						// finish to load the content
-						this.options.loadFinished = true;
+						this.ajaxError();
 					}
 				});
 			}else{
@@ -186,26 +178,33 @@ $(function() {
 					dataType : "jsonp",
 					jsonpCallback : "callback",
 					success : function(data){
-						// Validate the data
-						if(data || data.length<=0){
-							return;
-						}
-						
-						// Append the loaded content to the content container
-						$(data[this.options.dataAttribute]).hide().appendTo(container).autoLoadEffect(this.options.speed);
-						
-						// finish to load the content
-						this.options.loadFinished = true;
+						//Deal with the data
+						this.ajaxSuccess(data,container);
 					},
 					error : function(XMLHttpRequest, textStatus, errorThrown){
-						// Update the ajax counter
-						this.options.ajaxData.counter--;
-						
-						// finish to load the content
-						this.options.loadFinished = true;
+						this.ajaxError();
 					}
 				});
 			}
+		},
+		ajaxSuccess : function(data,container){
+			// Validate the data
+			if(data || data.length<=0){
+				return;
+			}
+			
+			// Append the loaded content to the content container
+			$(data[this.options.dataAttribute]).hide().appendTo(container).autoLoadEffect(this.options.speed);
+			
+			// finish to load the content
+			this.options.loadFinished = true;
+		},
+		ajaxError : function(){
+			// Update the ajax counter
+			this.options.ajaxData.counter--;
+			
+			// finish to load the content
+			this.options.loadFinished = true;
 		},
 		validateInt : function(value) {
 			return value < 0 || isNaN(value);
