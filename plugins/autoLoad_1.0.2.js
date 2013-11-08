@@ -128,7 +128,11 @@ $(function() {
 			// Define the load finish flag to judge
 			this.options.loadFinished = true;
 			
-			// Validate the content container
+			/**
+			 * Validate the content container
+			 * 
+			 * If the container is null or container not exist,set the document.body as the container
+			 */  
 			if(!container || !container[0]){
 				container = $(document.body);
 			}
