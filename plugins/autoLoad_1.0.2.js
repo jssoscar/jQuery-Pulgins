@@ -128,6 +128,11 @@ $(function() {
 			// Define the load finish flag to judge
 			this.options.loadFinished = true;
 			
+			// Validate the content container
+			if(!container || !container[0]){
+				container = $(document.body);
+			}
+			
 			// Definte the effect for the auto load plugin
 			$.fn.autoLoadEffect = AUTO_LOAD_CONSTANTS.showEffect(this.options.mode) ? $.fn.show : $.fn.fadeIn;
 			
