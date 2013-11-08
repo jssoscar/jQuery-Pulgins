@@ -111,3 +111,9 @@ Version : 1.0
 Date : 2013-11-7 16:14:00
 
 Note : Current version not support cross domain load content.
+
+Version: 1.0.2
+
+Date: 2013-11-8 11:10:40
+
+Note: . Add the cross domain support
