@@ -115,6 +115,9 @@ $(function() {
 			}
 			this.options.speed = this.options.speed * 1e3;
 			
+			// Define the load finish flag to judge
+			this.options.loadFinished = true;
+			
 			// Definte the effect for the auto load plugin
 			$.fn.autoLoadEffect = AUTO_LOAD_CONSTANTS.showEffect(this.options.mode) ? $.fn.show : $.fn.fadeIn;
 			
@@ -131,13 +134,16 @@ $(function() {
 				
 				// Scroll to bottom distance less than the plugin configuration,load the content
 				if($(document).height() - $(this).scrollTop() - $(this).height() <= _autoLoad.options.offsetBottom){
-					_autoLoad.load(container);
+					if(_autoLoad.options.loadFinished){
+						_autoLoad.load(container);
+					}
 				}
 			});
 		},
 		load : function(container) {
 			// Update the ajax data counter
 			this.options.ajaxData.counter++;
+			this.options.loadFinished = false;
 			
 			// Load the content asynchronous
 			$.ajax({
@@ -151,16 +157,18 @@ $(function() {
 						return;
 					}
 					
-					// Array data
-					if(data instanceof Array){
-					}
-					
 					// Append the loaded content to the content container
 					$(data[this.options.dataAttribute]).hide().appendTo(container).autoLoadEffect(this.options.speed);
+					
+					// finish to load the content
+					this.options.loadFinished = true;
 				},
 				error : function(XMLHttpRequest, textStatus, errorThrown){
 					// Update the ajax counter
 					this.options.ajaxData.counter--;
+					
+					// finish to load the content
+					this.options.loadFinished = true;
 				}
 			});
 		},
