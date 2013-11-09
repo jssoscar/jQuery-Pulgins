@@ -18,6 +18,7 @@ $(function() {
 	 * Constants for the auto load plugin
 	 *
 	 * MODE : the loaded content display mode,support 'show' and 'fadeIn' mode
+	 * REQUEST : the request type,current support GET and REQUEST. But query data asynchronous,general use the GET method to query.
 	 * showEffect : judge whether the display mode is 'show' mode
 	 * fadeEffect : judge whether the display mdoe is 'fade' mode
 	 */
