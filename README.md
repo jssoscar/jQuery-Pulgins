@@ -117,3 +117,11 @@ Version: 1.0.2
 Date: 2013-11-8 11:10:40
 
 Note: . Add the cross domain support
+
+==== autoEmailSuggest.js ====
+
+Description : jQuery plugin for auto email suggest when input email
+
+Version : 1.0
+
+Date : 2013-11-10 18:30:40
