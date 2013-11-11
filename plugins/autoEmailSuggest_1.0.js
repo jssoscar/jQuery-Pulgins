@@ -117,6 +117,7 @@ $.fn.autoEmailSuggest = function(options) {
 			result = [];
 		// Filter the mail list
 		if (/@/.test(emailVal) && emailSuffix) {
+			emailSuffix = "^" + emailSuffix;
 			mailArray = $.map(config.mail, function(index) {
 				if (new RegExp(emailSuffix).test(index)) {
 					return index;
