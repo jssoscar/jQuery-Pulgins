@@ -45,12 +45,11 @@ $.fn.autoEmailSuggest = function(options) {
 	 *
 	 */
 	$(this).each(function() {
-		var emailSuggest = $("<div class='autoEmailSuggest' tabIndex='-1'></div>"), _email = $(this), parent = _email.parent(),
-		dealPlaceholder = function(obj,emailVal){
-			if(emailVal){
-				obj.css("color","");
-			}else{
-				obj.css("color",config.placeholderColor);
+		var emailSuggest = $("<div class='autoEmailSuggest' tabIndex='-1'></div>"), _email = $(this), parent = _email.parent(), dealPlaceholder = function(obj, emailVal) {
+			if (emailVal) {
+				obj.css("color", "");
+			} else {
+				obj.css("color", config.placeholderColor);
 			}
 		};
 
@@ -91,14 +90,14 @@ $.fn.autoEmailSuggest = function(options) {
 		 * blur : empty the email suggest content, then hide it
 		 * keyup : 	. If the value is emplty : then empty the email suggest content, then hide it
 		 * 			. If the value is not empty : According to the email value,generate the email suggest block, then show it
-		 * focus : deal with the browser which not support the 'placeholder' attribute
+		 * focus : deal with the 'placeholder' attribute
 		 */
 		_email.bind("blur keyup focus", function(event) {
 			var emailVal = $.trim(_email.val());
 			switch(event.type) {
 				case "blur" : {
 					emailSuggest.empty().hide();
-					if(config.showPlaceholder){
+					if (config.showPlaceholder) {
 						if (!placeHolderSupported) {
 							if (!emailVal) {
 								_email.attr("value", config.placeholder).css("color", config.placeholderColor);
@@ -107,8 +106,8 @@ $.fn.autoEmailSuggest = function(options) {
 									_email.css("color", "");
 								}
 							}
-						}else{
-							dealPlaceholder(_email,emailVal);
+						} else {
+							dealPlaceholder(_email, emailVal);
 						}
 					}
 					break;
@@ -123,7 +122,7 @@ $.fn.autoEmailSuggest = function(options) {
 					break;
 				}
 				case "focus" : {
-					if(config.showPlaceholder){
+					if (config.showPlaceholder) {
 						if (!placeHolderSupported) {
 							if (emailVal) {
 								if (emailVal !== config.placeholder) {
@@ -133,7 +132,7 @@ $.fn.autoEmailSuggest = function(options) {
 								}
 							}
 						} else {
-							dealPlaceholder(_email,emailVal);
+							dealPlaceholder(_email, emailVal);
 						}
 					}
 				}
@@ -141,7 +140,7 @@ $.fn.autoEmailSuggest = function(options) {
 		});
 
 		/**
-		 * Deal with the email suggest node
+		 * Deal with the email suggest node.Here,must use the delegate to deal with the event.
 		 *
 		 * mouseover : deal with the mouseover background color
 		 * mouseout : deal with the mouseout background color
@@ -176,7 +175,7 @@ $.fn.autoEmailSuggest = function(options) {
 	 */
 	function generateEmailSuggest(emailVal) {
 		var emailPrefix = emailVal.replace(/@.*/, ""), emailSuffix = emailVal.replace(/.*@/, ""), mailArray = config.mail, result = [];
-		if(!emailPrefix){
+		if (!emailPrefix) {
 			return "";
 		}
 		// Filter the mail list
@@ -195,4 +194,4 @@ $.fn.autoEmailSuggest = function(options) {
 		return "<ul>" + result.join("") + "</ul>";
 	}
 
-};
+}; 
