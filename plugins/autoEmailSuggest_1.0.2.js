@@ -34,7 +34,7 @@ $.fn.autoEmailSuggest = function(options) {
 		// Extend the configuration
 		$.extend(defaultCfg, options);
 		return defaultCfg;
-	})(), placeHolderSupported = 'placeholder' in document.createElement("input");
+	})(), placeHolderSupported = "placeholder" in document.createElement("input");
 
 	/**
 	 * Deal with the email suggest input
@@ -174,18 +174,22 @@ $.fn.autoEmailSuggest = function(options) {
 	 * . Generate the email suggest content
 	 */
 	function generateEmailSuggest(emailVal) {
-		var emailPrefix = emailVal.replace(/@.*/, ""), emailSuffix = emailVal.replace(/.*@/, ""), mailArray = config.mail, result = [];
-		if (!emailPrefix) {
+		if(!/^[A-Z_a-z0-9-\.]+/.test(emailVal)){
 			return "";
 		}
+		var emailPrefix = emailVal.replace(/@.*/, ""),emailSuffix = emailVal.replace(/^[A-Z_a-z0-9-\.]*@/, ""), mailArray = config.mail, result = [];
 		// Filter the mail list
 		if (/@/.test(emailVal) && emailSuffix) {
-			emailSuffix = "^" + emailSuffix;
-			mailArray = $.map(config.mail, function(index) {
-				if (new RegExp(emailSuffix).test(index)) {
-					return index;
-				}
-			});
+			if(/^[A-Z_a-z0-9-\.]+$/.test(emailSuffix)){
+				emailSuffix = "^" + emailSuffix;
+				mailArray = $.map(config.mail, function(index) {
+					if (new RegExp(emailSuffix).test(index)) {
+						return index;
+					}
+				});
+			}else{
+				return "";
+			}
 		}
 		// Generate the email suggest content
 		for (var i = 0, len = mailArray.length; i < len; i++) {
