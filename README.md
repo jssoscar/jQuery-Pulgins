@@ -125,3 +125,11 @@ Description : jQuery plugin for auto email suggest when input email
 Version : 1.0
 
 Date : 2013-11-10 18:30:40
+
+Version: 1.0.2
+
+Date : 2013-11-12 12:10:12
+
+Changelog:  . Add the HTML5 'placeholder' attribute support for the email input
+
+	    . Support custom the 'placeholder' text color
