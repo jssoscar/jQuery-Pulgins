@@ -180,7 +180,7 @@ $.fn.autoEmailSuggest = function(options) {
 		var emailPrefix = emailVal.replace(/@.*/, ""),emailSuffix = emailVal.replace(/^[A-Z_a-z0-9-\.]*@/, ""), mailArray = config.mail, result = [];
 		// Filter the mail list
 		if (/@/.test(emailVal) && emailSuffix) {
-			if(/^[A-Z_a-z0-9-\.]+$/.test(emailSuffix)){
+			if(/^([A-Z_a-z0-9-]+\.)+$/.test(emailSuffix)){
 				emailSuffix = "^" + emailSuffix;
 				mailArray = $.map(config.mail, function(index) {
 					if (new RegExp(emailSuffix).test(index)) {
