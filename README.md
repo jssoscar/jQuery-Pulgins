@@ -133,3 +133,13 @@ Date : 2013-11-12 12:10:12
 Changelog:  . Add the HTML5 'placeholder' attribute support for the email input
 
 	    . Support custom the 'placeholder' text color
+
+Version : 2.0
+
+Date : 2013-11-13 15:24:42
+
+Changelog : . Add key UP,key DOWN handler to switch the suggest email
+
+	    . Add the key Enter handler to set the email value
+
+	    . Fixed the bug when filter the email
