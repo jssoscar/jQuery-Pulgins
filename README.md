@@ -40,6 +40,16 @@ Note : . Add the slider animation mode : default is animation mode
 
        . Optimize the code
 
+Version : 2.0
+
+Date : 2013-11-14 17:15:35
+
+Note : . Fixed the bug
+
+       . Optimize the code
+
+       . Add the slider effect method to show/fade the slider element
+
 ==== map_1.0.js ====
 
 Description : jQuery plugin for the key & value object
