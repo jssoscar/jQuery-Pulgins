@@ -6,7 +6,7 @@
  * Usage		$.timer({
 					startTime : new Date(2013,11,16,23,12,10),
 					endTime : new Date(2013,11,16,23,12,14),
-					serverTime : $("#serverTime").val(),
+					serverTime : 1387206732000,// new Date(2013,11,16,23,12,12)
 					callback : function(){
 						alert("Hello world!");
 					}
