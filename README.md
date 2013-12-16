@@ -153,3 +153,11 @@ Changelog : . Add key UP,key DOWN handler to switch the suggest email
 	    . Add the key Enter handler to set the email value
 
 	    . Fixed the bug when filter the email
+	    
+==== toolTip.js ====
+
+Description : jQuery plugin for tooltip
+
+Version : 1.0
+
+Date : 2013-11-16 14:08:13

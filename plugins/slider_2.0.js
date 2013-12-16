@@ -1,27 +1,27 @@
 /**
  * Author		jssoscar
  * Date			2013-10-15 14:30:26
- * Description	jQuery plugin for slider
+ * Description		jQuery plugin for slider
  * Since		1.0
 
  * Version		1.0.1
  * Update		2013-10-16 10:44:21
  * Note			. Fixed the bug for mouseout event
- * 				. Fixed the bug for the clone first li node
- * 				. Optimize the code for find the ul node
+ * 			. Fixed the bug for the clone first li node
+ * 			. Optimize the code for find the ul node
  *
  * Version		1.0.2
  * Date			2013-10-21 11:03:45
  * Note			. Add the slider animation mode : default is animation mode
- * 				. Support 3 kinds of mode : animate,show,fade
- * 				. Fixed the bug
- * 				. Optimize the code
+ * 			. Support 3 kinds of mode : animate,show,fade
+ * 			. Fixed the bug
+ * 			. Optimize the code
  * 
  * Version		2.0
  * Date			2013-11-14 12:06:07
- * Changelog	. Fixed the bug
- * 				. Optimize the code
- * 				. Add the slider effect method to show/fade the slider element
+ * Changelog		. Fixed the bug
+ * 			. Optimize the code
+ * 			. Add the slider effect method to show/fade the slider element
  */
 $.fn.slider = function(config) {
 	// The slider default configuration
