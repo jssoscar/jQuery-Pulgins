@@ -161,3 +161,11 @@ Description : jQuery plugin for tooltip
 Version : 1.0
 
 Date : 2013-11-16 14:08:13
+
+==== timer.js ====
+
+Description : jQuery plugin for timer
+
+Version : 1.0
+
+Date :2013-12-16 14:54:12
