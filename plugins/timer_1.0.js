@@ -16,12 +16,12 @@ jQuery.timer = function(options) {
     /**
      * The configuration for the timer plugin
      *  
-     * @param {String} startTime : start time for the timer.The data format: 2013,11,15,23,59,59
-     * @param {String} endTime : end time for the timer.The data format: 2013,11,15,23,59,59
+     * @param {String} startTime : start time for the timer.The data format: new Date(2013,11,15,23,59,59)
+     * @param {String} endTime : end time for the timer.The data format: new Date(2013,11,15,23,59,59).
      * @param {Function} callback : the timer code to be executed
      * @param {Number} serverTime : the server time(mill seconds).This parameter is required.
      * 
-     * PS: Here,about the server time.Why not the client time?
+     * Here,about the server time.Why not the client time?
      * The client time is not safe because client can define or change the time.
      * So,if use the client time to execute the the callback code,may cause error.
      * 
@@ -66,7 +66,7 @@ jQuery.timer = function(options) {
     })();
     
     /**
-     * Compare the server time and the custom time
+     * Compare the server time with the custom time
      * 
      * . Server between the start time and the end time: execute the callback code
      * . Start time equal 0 : If the server time less than the end time,execute the callback code
@@ -76,6 +76,8 @@ jQuery.timer = function(options) {
         if(config.startTime<= config.serverTime && config.serverTime <= config.endTime){
             config.callback();
         }
+    }else if(config.startTime === 0 && config.endTime === 0){
+    	// TODO
     }else if(config.startTime === 0){
         if(config.serverTime <= config.endTime){
             config.callback();
