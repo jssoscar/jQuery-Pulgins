@@ -11,6 +11,10 @@
 						alert("Hello world!");
 					}
 				});
+ * 
+ * Version		2.0
+ * ChangeLog	. Optimize the code
+ * 
  */
 jQuery.timer = function(options) {
     /**
