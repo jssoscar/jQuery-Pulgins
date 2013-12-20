@@ -72,19 +72,8 @@ jQuery.timer = function(options) {
      * . Start time equal 0 : If the server time less than the end time,execute the callback code
      * . End time equal 0 : If the server time greater than the start time,execute the callback code
      */
-    if(config.startTime !== 0 && config.endTime !== 0){
-        if(config.startTime<= config.serverTime && config.serverTime <= config.endTime){
-            config.callback();
-        }
-    }else if(config.startTime === 0 && config.endTime === 0){
-    	// TODO
-    }else if(config.startTime === 0){
-        if(config.serverTime <= config.endTime){
-            config.callback();
-        }
-    }else if(config.endTime === 0){
-        if(config.startTime <= config.serverTime){
-            config.callback();
-        }
+    if(!config.serverTime || config.startTime > config.serverTime || config.serverTime > config.endTime){
+    	return;
     }
+ 	config.callback();
 };
