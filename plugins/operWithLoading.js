@@ -42,7 +42,7 @@ operWithLoading.prototype = {
 	/**
 	 * @param {String} overlayBgColor : background color for the overlay
 	 * @param {Number} speed : fadeIn speed
-	 * @param {Number} opacity : opacity for the loading effect
+	 * @param {Number} overlayOpacity : opacity for the overlay
 	 * @param {String} className : class for the loading image
 	 * @param {Number} overlayWidth : the overlay width
 	 * @param {Number} overlayHeight : the overlay height
