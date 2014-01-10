@@ -55,7 +55,7 @@ operWithLoading.prototype = {
 	extend : function(options) {
 		var defaultCfg = {
 			speed : 1,
-			opacity : 1,
+			overlayOpacity : 1,
 			className : "loading_overlay",
 			overlayBgColor : "#FFF",
 			overlayWidth : "auto",
@@ -77,8 +77,8 @@ operWithLoading.prototype = {
 		/**
 		 * Deal with the opacity
 		 */
-		if (defaultCfg.opacity < 0 || defaultCfg.opacity > 1) {
-			defaultCfg.opacity = 1;
+		if (defaultCfg.overlayOpacity < 0 || defaultCfg.overlayOpacity > 1) {
+			defaultCfg.overlayOpacity = 1;
 		}
 
 		/**
@@ -102,8 +102,8 @@ operWithLoading.prototype = {
 	dealOverlay : function(){
 		return {
 			"background-color" : this.options.overlayBgColor,
-			"opacity" : this.options.opacity,
-			"filter" : "alpha(opacity=" + this.options.opacity * 100 + ")",
+			"opacity" : this.options.overlayOpacity,
+			"filter" : "alpha(opacity=" + this.options.overlayOpacity * 100 + ")",
 			"position" : "absolute",
 			"left" : 0,
 			"top" : 0,
@@ -115,8 +115,6 @@ operWithLoading.prototype = {
 	dealLoading : function(){
 		return {
 			"background-color" : this.options.loadingBgColor,
-			"opacity" : this.options.opacity,
-			"filter" : "alpha(opacity=" + this.options.opacity * 100 + ")",
 			"position" : "absolute",
 			"left" : "50%",
 			"top" : "50%",
