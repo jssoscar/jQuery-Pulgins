@@ -169,3 +169,11 @@ Description : jQuery plugin for timer
 Version : 1.0
 
 Date :2013-12-16 14:54:12
+
+==== operWithLoading.js ====
+
+Description : jQuery plugin for the operation with loading effect
+
+Version : 2.0
+
+Date : 2014-1-10 16:01:07
