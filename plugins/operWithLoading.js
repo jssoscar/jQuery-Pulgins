@@ -3,7 +3,9 @@
  * Date			2014-1-10 15:54:57
  * Version		2.0
  * Description	jQuery plugin for the operation with loading effect
- *
+ * 
+ * Version		2.0
+ * Changelog	. Optimize the code
  */
 /**
  * Define the operation with loading object
@@ -21,8 +23,8 @@ function operWithLoading(container, options) {
 	if (this instanceof operWithLoading) {
 		this.container = container;
 		this.options = this.extend(options);
-		this.loading = $("<div></div>").css(this.dealLoading()).hide();
-		this.overlay = $('<iframe frameBorder="0"></iframe>').css(this.dealOverlay()).hide();
+		this.loading = $("<div></div>").css(this.dealLoading());
+		this.overlay = $('<iframe frameBorder="0"></iframe>').css(this.dealOverlay());
 		this.removed = true;
 	} else {
 		return new operWithLoading(element, options);
@@ -34,6 +36,8 @@ function operWithLoading(container, options) {
  * 
  * extend : Extend the customer configuration
  * show : show the loading element
+ * showOverlay : show the overlay
+ * showLoading : show the loading
  * remove : remove the loading element
  * removeOverlay : remove the overlay
  * removeLoading : remove the loading image
@@ -109,7 +113,8 @@ operWithLoading.prototype = {
 			"top" : 0,
 			"z-index" : 998,
 			"width" : this.options.overlayWidth,
-			"height" : this.options.overlayHeight
+			"height" : this.options.overlayHeight,
+			"display" : "none"
 		};
 	},
 	dealLoading : function(){
@@ -121,7 +126,8 @@ operWithLoading.prototype = {
 			"z-index" : 999,
 			"margin" : "-" + parseInt(this.options.loadingHeight/2) + "px 0 0 -" + parseInt(this.options.loadingWidth/2)+"px",
 			"width" : this.options.loadingWidth,
-			"height" : this.options.loadingHeight
+			"height" : this.options.loadingHeight,
+			"display" : "none"
 		};
 	},
 	show : function() {
@@ -131,14 +137,20 @@ operWithLoading.prototype = {
 				this.container.css("position", "relative");
 			}
 			if(this.options.overlay && this.options.loading){
-				this.overlay.appendTo(this.container).fadeIn(this.options.speed);
-				this.loading.addClass(this.options.className).appendTo(this.container).fadeIn(this.options.speed);
+				this.showOverlay();
+				this.showLoading();
 			}else if(this.options.overlay){
-				this.overlay.appendTo(this.container).fadeIn(this.options.speed);
+				this.showOverlay();
 			}else if(this.options.loading){
-				this.loading.addClass(this.options.className).appendTo(this.container).fadeIn(this.options.speed);
+				this.showLoading();
 			}
 		}
+	},
+	showOverlay : function(){
+		this.overlay.appendTo(this.container).show(this.options.speed);
+	},
+	showLoading : function(){
+		this.loading.addClass(this.options.className).appendTo(this.container).show(this.options.speed);
 	},
 	remove : function() {
 		if(this.options.overlay && this.options.loading){
