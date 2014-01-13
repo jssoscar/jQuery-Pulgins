@@ -3,21 +3,28 @@
  * Date			2014-1-10 15:54:57
  * Version		2.0
  * Description	jQuery plugin for the operation with loading effect
- * 
- * Version		2.0
- * Changelog	. Optimize the code
+ *
+ * Version		2.0.2
+ * Date			2014-1-13 11:16:51
+ * Changelog	.	Optimize the code
+ * 				.	Add showOverlay/showLoading function
  */
 /**
  * Define the operation with loading object
  * 
  * @param {Object} container : the overlay element container(parent node)
  * @param {Object} options : the configuration for the loading object
- * 		@param {String} bgColor : the background color for the overlay
- * 		@param {Number} speed : the animation speed
- * 		@param {Number} opacity : the opacity style for the overlay
- * 		@param {String} className : the className for the overlay
- * 		@param {Integer} width : the width attribute for the overlay
- * 		@param {Integer} height : the height attribute for the overlay
+ * 		@param {String} overlayBgColor : background color for the overlay
+ * 		@param {Number} speed : show speed
+ * 		@param {Number} overlayOpacity : opacity for the overlay
+ * 		@param {String} className : class for the loading image
+ * 		@param {Number} overlayWidth : the overlay width
+ * 		@param {Number} overlayHeight : the overlay height
+ * 		@param {String} loadingBgColor : background color for the loading iamge container
+ * 		@param {Number} loadingWidth : the loading iamge container width
+ * 		@param {Number} loadingHeight : the loading image container height
+ * 		@param {Boolean} overlay : whether show the overlay
+ * 		@param {Boolean} loading : whether show the loading
  */
 function operWithLoading(container, options) {
 	if (this instanceof operWithLoading) {
@@ -36,8 +43,8 @@ function operWithLoading(container, options) {
  * 
  * extend : Extend the customer configuration
  * show : show the loading element
- * showOverlay : show the overlay
- * showLoading : show the loading
+ * showOverlay : show the overlay content
+ * showLoading : show the loading content
  * remove : remove the loading element
  * removeOverlay : remove the overlay
  * removeLoading : remove the loading image
@@ -45,7 +52,7 @@ function operWithLoading(container, options) {
 operWithLoading.prototype = {
 	/**
 	 * @param {String} overlayBgColor : background color for the overlay
-	 * @param {Number} speed : fadeIn speed
+	 * @param {Number} speed : show speed
 	 * @param {Number} overlayOpacity : opacity for the overlay
 	 * @param {String} className : class for the loading image
 	 * @param {Number} overlayWidth : the overlay width
@@ -58,9 +65,9 @@ operWithLoading.prototype = {
 	 */
 	extend : function(options) {
 		var defaultCfg = {
-			speed : 1,
-			overlayOpacity : 1,
-			className : "loading_overlay",
+			speed : 0,
+			overlayOpacity : 0.5,
+			className : "",
 			overlayBgColor : "#FFF",
 			overlayWidth : "auto",
 			overlayHeight : "auto",
@@ -82,7 +89,7 @@ operWithLoading.prototype = {
 		 * Deal with the opacity
 		 */
 		if (defaultCfg.overlayOpacity < 0 || defaultCfg.overlayOpacity > 1) {
-			defaultCfg.overlayOpacity = 1;
+			defaultCfg.overlayOpacity = 0.5;
 		}
 
 		/**
@@ -107,6 +114,7 @@ operWithLoading.prototype = {
 		return {
 			"background-color" : this.options.overlayBgColor,
 			"opacity" : this.options.overlayOpacity,
+			"background-image" : "",
 			"filter" : "alpha(opacity=" + this.options.overlayOpacity * 100 + ")",
 			"position" : "absolute",
 			"left" : 0,
@@ -119,7 +127,7 @@ operWithLoading.prototype = {
 	},
 	dealLoading : function(){
 		return {
-			"background-color" : this.options.loadingBgColor,
+			"background" : this.options.loadingBgColor + " url(http://nuomi.xnimg.cn/vone/img/loading/loading.gif?ver) no-repeat center center",
 			"position" : "absolute",
 			"left" : "50%",
 			"top" : "50%",
@@ -164,14 +172,14 @@ operWithLoading.prototype = {
 	},
 	removeOverlay : function(){
 		var _this = this;
-		_this.overlay.fadeOut(this.options.speed, function() {
+		_this.overlay.hide(this.options.speed, function() {
 			$(this).remove();
 			_this.removed = true;
 		});
 	},
 	removeLoading : function(){
 		var _this = this;
-		_this.loading.fadeOut(this.options.speed, function() {
+		_this.loading.hide(this.options.speed, function() {
 			$(this).remove();
 			_this.removed = true;
 		});
