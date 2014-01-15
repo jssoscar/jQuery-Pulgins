@@ -161,13 +161,15 @@ operWithLoading.prototype = {
 		this.loading.addClass(this.options.className).appendTo(this.container).show(this.options.speed);
 	},
 	remove : function() {
-		if(this.options.overlay && this.options.loading){
-			this.removeOverlay();
-			this.removeLoading();
-		}else if(this.options.overlay){
-			this.removeOverlay();
-		}else if(this.options.loading){
-			this.removeLoading();
+		if (!this.removed) {
+			if (this.options.overlay && this.options.loading) {
+				this.removeOverlay();
+				this.removeLoading();
+			} else if (this.options.overlay) {
+				this.removeOverlay();
+			} else if (this.options.loading) {
+				this.removeLoading();
+			}
 		}
 	},
 	removeOverlay : function(){
