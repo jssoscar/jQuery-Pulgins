@@ -26,7 +26,7 @@
  * 		@param {Boolean} overlay : whether show the overlay
  * 		@param {Boolean} loading : whether show the loading
  */
-function operWithLoading(container, options) {
+function OperWithLoading(container, options) {
 	if (this instanceof operWithLoading) {
 		this.container = container;
 		this.options = this.extend(options);
@@ -49,7 +49,7 @@ function operWithLoading(container, options) {
  * removeOverlay : remove the overlay
  * removeLoading : remove the loading image
  */
-operWithLoading.prototype = {
+OperWithLoading.prototype = {
 	/**
 	 * @param {String} overlayBgColor : background color for the overlay
 	 * @param {Number} speed : show speed
