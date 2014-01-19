@@ -27,14 +27,14 @@
  * 		@param {Boolean} loading : whether show the loading
  */
 function OperWithLoading(container, options) {
-	if (this instanceof operWithLoading) {
+	if (this instanceof OperWithLoading) {
 		this.container = container;
 		this.options = this.extend(options);
 		this.loading = $("<div></div>").css(this.dealLoading());
 		this.overlay = $('<iframe frameBorder="0"></iframe>').css(this.dealOverlay());
 		this.removed = true;
 	} else {
-		return new operWithLoading(element, options);
+		return new OperWithLoading(element, options);
 	}
 }
 
