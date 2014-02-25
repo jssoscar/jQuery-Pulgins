@@ -132,7 +132,7 @@ OperWithLoading.prototype = {
 			"left" : "50%",
 			"top" : "50%",
 			"z-index" : 999,
-			"margin" : "-" + parseInt(this.options.loadingHeight/2) + "px 0 0 -" + parseInt(this.options.loadingWidth/2)+"px",
+			"margin" : "-" + parseInt(this.options.loadingHeight / 2, 10) + "px 0 0 -" + parseInt(this.options.loadingWidth / 2, 10)+"px",
 			"width" : this.options.loadingWidth,
 			"height" : this.options.loadingHeight,
 			"display" : "none"
@@ -144,12 +144,10 @@ OperWithLoading.prototype = {
 			if (this.container.css("position") === "static") {
 				this.container.css("position", "relative");
 			}
-			if(this.options.overlay && this.options.loading){
+			if(this.options.overlay){
 				this.showOverlay();
-				this.showLoading();
-			}else if(this.options.overlay){
-				this.showOverlay();
-			}else if(this.options.loading){
+			}
+			if(this.options.loading){
 				this.showLoading();
 			}
 		}
@@ -162,12 +160,10 @@ OperWithLoading.prototype = {
 	},
 	remove : function() {
 		if (!this.removed) {
-			if (this.options.overlay && this.options.loading) {
+			if (this.options.overlay) {
 				this.removeOverlay();
-				this.removeLoading();
-			} else if (this.options.overlay) {
-				this.removeOverlay();
-			} else if (this.options.loading) {
+			}
+			if (this.options.loading) {
 				this.removeLoading();
 			}
 		}
