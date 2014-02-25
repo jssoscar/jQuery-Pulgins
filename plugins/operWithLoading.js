@@ -34,7 +34,7 @@ function OperWithLoading(container, options) {
 		this.overlay = $('<iframe frameBorder="0"></iframe>').css(this.dealOverlay());
 		this.removed = true;
 	} else {
-		return new OperWithLoading(element, options);
+		return new OperWithLoading(container, options);
 	}
 }
 
