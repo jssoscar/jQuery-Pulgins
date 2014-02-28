@@ -177,3 +177,9 @@ Description : jQuery plugin for the operation with loading effect
 Version : 2.0
 
 Date : 2014-1-10 16:01:07
+
+==== lazyload.js ====
+
+Description : jQuery plugin for the lazy load image
+
+Date : 2014-2-28 15:44:53
