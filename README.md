@@ -158,9 +158,11 @@ Changelog : . Add key UP,key DOWN handler to switch the suggest email
 
 Description : jQuery plugin for tooltip
 
-Version : 1.0
+Version : 1.0.3
 
-Date : 2013-11-16 14:08:13
+Date : 2014-4-9 17:02:58
+
+Changelog : . Add the display effect,default is show function. Support show and fadeIn.
 
 ==== timer.js ====
 
