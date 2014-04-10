@@ -25,7 +25,7 @@
 				 
  * Version		1.0.3
  * Date			2014-4-9 10:37:17
- * Changelog	. Add the display effect,default is show function. Support show and fadeIn.
+ * Changelog	.	Add the display effect,default is show function. Support show and fadeIn.
  * Usage		$(function(){
 					 $(".tip").toolTip({
 						 direction : "bottom",
@@ -34,19 +34,32 @@
 					 });
 			 	});
  * 
+ * Version		1.0.4
+ * Date			2014-4-9 18:00:59
+ * Changelog	.	Support cache the tooltip.Default is false.
+ * Usage		$(function(){
+					 $(".tip").toolTip({
+						 direction : "bottom",
+						 cache : true
+					 });
+			 	});
+ *
+ * Version		1.0.5
+ * Date			2014-4-10 09:17:50
+ * Changelog	. Fixed the bug
  */
 
 /**
  * Define the tooltip function
  *
  * @param {Object} options : the toolitip configuration
- * 		@param {String} trigger : the tooltip trigger event,support hover,focus,click.Default is hover.
- * 		@param {String} direction : the tooltip direction,support left,right,top,bottom.Default is top.
+ * 		@param {String} trigger : the tooltip trigger event,support hover,focus,click.Default is "hover".
+ * 		@param {String} direction : the tooltip direction,support left,right,top,bottom.Default is "top".
  * 		@param {String} content : the tooltip content.Here,support two type : the "data-tooltip-title" and HTML content.
- * 		@param {Number} offset : the tooltip offset
+ * 		@param {Number} offset : the tooltip offset.Default is 10.
  * 		@param {String} style : the customer style for the tooltip
- * 		@param {String} effect : the effect for the tooltip
- * 		@param {Boolean} cache : whether cache the tooltip
+ * 		@param {String} effect : the effect for the tooltip.Default is "show".
+ * 		@param {Boolean} cache : whether cache the tooltip.Default is "false".
  */
 $.fn.toolTip = function(options) {
 	// Define the tooltip controller
@@ -71,12 +84,13 @@ $.fn.toolTip = function(options) {
 	// Deal with the configuration
 	(function() {
 		var defaultCfg = {
-			trigger : toolTipController.eventType.hover, // hover,focus,click
-			direction : "top", // left,right,top,bottom
-			content : null, // tooltip content
-			offset : 10, // the tooltip offset
-			style : "default", // the default style
-			effect : "show"
+			trigger : toolTipController.eventType.hover, 
+			direction : "top", 
+			content : null, 
+			offset : 10, 
+			style : "default", 
+			effect : "show", 
+			cache : false
 		};
 		$.extend(defaultCfg, options);
 
@@ -107,19 +121,19 @@ $.fn.toolTip = function(options) {
 		// Bind event handler
 		if (options.trigger === "hover") {
 			$(_this).hover(function() {
-				generateToolTip($(this));
+				generateToolTip($(this),index);
 			}, function() {
-				removeToolTip();
+				hideToolTip(index);
 			});
 		} else {
 			$(_this).bind("mouseout " + options.trigger, function(event) {
 				switch(event.type) {
 					case options.trigger : {
-						generateToolTip($(this));
+						generateToolTip($(this),index);
 						break;
 					}
 					case "mouseout" : {
-						removeToolTip();
+						hideToolTip();
 						break;
 					}
 				}
@@ -166,9 +180,9 @@ $.fn.toolTip = function(options) {
 	 * Generate the tooltip
 	 * @param {Object} obj : the tooltip object
 	 */
-	function generateToolTip(obj) {
+	function generateToolTip(obj,index) {
 		var title = $.trim($(obj).attr("data-tooltip-title")), 
-			toolTipContent = null, toolTipPlugin = $(".tooltip-plugin"),
+			toolTipContent = null, toolTipPlugin = $(".tooltip-plugin_"+index),
 			toolTip = $('<div class="tooltip-plugin">' +
 							'<div class="tooltip-plugin-content"></div>' + 
 							'<div class="tooltip-outer-triangle">' + 
@@ -176,7 +190,8 @@ $.fn.toolTip = function(options) {
 								'</div>' + 
 						'</div>');
 
-		if (toolTipPlugin[0]) {
+		if (toolTipPlugin[0] && options.cache) {
+			toolTipPlugin[options.effect]();
 			return;
 		}
 
@@ -188,7 +203,7 @@ $.fn.toolTip = function(options) {
 			return;
 		}
 
-		toolTip.addClass("tooltip-plugin-" + options.direction + " tooltip-plugin-style-" + options.style).hide();
+		toolTip.addClass("tooltip-plugin_"+index + " tooltip-plugin-" + options.direction + " tooltip-plugin-style-" + options.style).hide();
 		toolTip.find(".tooltip-plugin-content").html(toolTipContent);
 		if(options.direction === "top" || options.direction === "bottom"){
 			toolTip.find(".tooltip-outer-triangle").addClass("tooltip-outer-triangle-vertical");
@@ -196,15 +211,19 @@ $.fn.toolTip = function(options) {
 			toolTip.find(".tooltip-outer-triangle").addClass("tooltip-outer-triangle-horizontal");
 		}
 		toolTip.appendTo($("body"));
-		toolTipPlugin = $(".tooltip-plugin");
+		toolTipPlugin = $("tooltip-plugin_"+index);
 		toolTip.css(calculateDirection(obj, toolTip));
 		toolTip[options.effect]();
 	}
 
 	/**
-	 * Remove the tooltip
+	 * Hide the tooltip
 	 */
-	function removeToolTip() {
-		$(".tooltip-plugin").remove();
+	function hideToolTip(index) {
+		if(options.cache){
+			$(".tooltip-plugin_"+index).hide();
+		}else{
+			$(".tooltip-plugin_"+index).remove();
+		}
 	}
 };
