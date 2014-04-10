@@ -28,10 +28,10 @@
 .tooltip-plugin-style-default{border: 1px solid #dde8ee;background-color: #FFF;}
 /** Vertical style : top && bottom **/
 .tooltip-plugin-style-default .tooltip-outer-triangle-vertical{border-color: #DDD transparent}
-.tooltip-outer-triangle-vertical .tooltip-inner-triangle{border-color: #FFF transparent}
+.tooltip-plugin-style-default .tooltip-outer-triangle-vertical .tooltip-inner-triangle{border-color: #FFF transparent}
 /** Horizontal style : left and right **/
 .tooltip-plugin-style-default .tooltip-outer-triangle-horizontal{border-color: transparent #DDD;}
-.tooltip-outer-triangle-horizontal .tooltip-inner-triangle{border-color: transparent #FFF;}
+.tooltip-plugin-style-default .tooltip-outer-triangle-horizontal .tooltip-inner-triangle{border-color: transparent #FFF;}
 
 /**
  * 	Gray tooltip style
@@ -39,10 +39,10 @@
 .tooltip-plugin-style-gray{border: 1px solid #dde8ee;background-color: #DDD;}
 /** Vertical style : top && bottom **/
 .tooltip-plugin-style-gray .tooltip-outer-triangle-vertical{border-color: #FFF transparent}
-.tooltip-outer-triangle-vertical .tooltip-inner-triangle{border-color: #DDD transparent}
+.tooltip-plugin-style-gray .tooltip-outer-triangle-vertical .tooltip-inner-triangle{border-color: #DDD transparent}
 /** Horizontal style : left and right **/
 .tooltip-plugin-style-gray .tooltip-outer-triangle-horizontal{border-color: transparent #FFF;}
-.tooltip-outer-triangle-horizontal .tooltip-inner-triangle{border-color: transparent #DDD;}
+.tooltip-plugin-style-gray .tooltip-outer-triangle-horizontal .tooltip-inner-triangle{border-color: transparent #DDD;}
 
 /**
  * 	Light yellow style
@@ -50,7 +50,7 @@
 .tooltip-plugin-style-lightyellow{border: 1px solid #ecd181;background-color: #fcf8e9;}
 /** Vertical style : top && bottom **/
 .tooltip-plugin-style-lightyellow .tooltip-outer-triangle-vertical{border-color: #ecd181 transparent}
-.tooltip-outer-triangle-vertical .tooltip-inner-triangle{border-color: #fcf8e9 transparent}
+.tooltip-plugin-style-lightyellow .tooltip-outer-triangle-vertical .tooltip-inner-triangle{border-color: #fcf8e9 transparent}
 /** Horizontal style : left and right **/
 .tooltip-plugin-style-lightyellow .tooltip-outer-triangle-horizontal{border-color: transparent #ecd181;}
-.tooltip-outer-triangle-horizontal .tooltip-inner-triangle{border-color: transparent #fcf8e9;}
+.tooltip-plugin-style-lightyellow .tooltip-outer-triangle-horizontal .tooltip-inner-triangle{border-color: transparent #fcf8e9;}
