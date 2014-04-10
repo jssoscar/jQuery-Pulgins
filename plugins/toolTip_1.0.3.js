@@ -47,7 +47,18 @@
  * Version		1.0.5
  * Date			2014-4-10 09:17:50
  * Changelog	. Fixed the bug
+ * 
+ * Version		1.1
+ * Date			2014-4-10 10:08:00
+ * Changelog	. Fixed the bug when parameter "cache" is "true"
  */
+
+/**
+ * Define the tooltip cache controller object 
+ */
+$.toolTipCacheController = {
+	cacheCount : 0
+};
 
 /**
  * Define the tooltip function
@@ -115,8 +126,12 @@ $.fn.toolTip = function(options) {
 	})();
 
 	// Handler for the tooltip content
-	$(this).each(function(index) {
-		var _this = this;
+	$(this).each(function() {
+		var _this = this,index = -1;
+		
+		if(options.cache){
+			index = $.toolTipCacheController.cacheCount++;
+		}
 
 		// Bind event handler
 		if (options.trigger === "hover") {
@@ -125,7 +140,13 @@ $.fn.toolTip = function(options) {
 			}, function() {
 				hideToolTip(index);
 			});
-		} else {
+		} else if(options.trigger === "focus"){
+			$(this).focusin(function(){
+				generateToolTip($(this),index);
+			}).focusout(function() {
+				hideToolTip(index);
+			});
+		}else{
 			$(_this).bind("mouseout " + options.trigger, function(event) {
 				switch(event.type) {
 					case options.trigger : {
@@ -133,7 +154,7 @@ $.fn.toolTip = function(options) {
 						break;
 					}
 					case "mouseout" : {
-						hideToolTip();
+						hideToolTip(index);
 						break;
 					}
 				}
@@ -211,7 +232,7 @@ $.fn.toolTip = function(options) {
 			toolTip.find(".tooltip-outer-triangle").addClass("tooltip-outer-triangle-horizontal");
 		}
 		toolTip.appendTo($("body"));
-		toolTipPlugin = $("tooltip-plugin_"+index);
+		toolTipPlugin = $("tooltip-plugin_"+options.index);
 		toolTip.css(calculateDirection(obj, toolTip));
 		toolTip[options.effect]();
 	}
