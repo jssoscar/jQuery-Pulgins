@@ -66,7 +66,7 @@ $.toolTipCacheController = {
  * @param {Object} options : the toolitip configuration
  * 		@param {String} trigger : the tooltip trigger event,support hover,focus,click.Default is "hover".
  * 		@param {String} direction : the tooltip direction,support left,right,top,bottom.Default is "top".
- * 		@param {String} content : the tooltip content.Here,support two type : the "data-tooltip-title" and HTML content.
+ * 		@param {String} content : the tooltip content.Here,support two type : the "data-tooltip" and HTML content.
  * 		@param {Number} offset : the tooltip offset.Default is 10.
  * 		@param {String} style : the customer style for the tooltip
  * 		@param {String} effect : the effect for the tooltip.Default is "show".
@@ -164,6 +164,7 @@ $.fn.toolTip = function(options) {
 
 	/**
 	 * Calculate the direction for the tooltip
+	 * 
 	 * @param {Object} options : the tooltip configuration
 	 * @param {Object} toolTipObj : the tooltip object
 	 * @param {Object} toolTip : the tooltip
@@ -199,10 +200,12 @@ $.fn.toolTip = function(options) {
 
 	/**
 	 * Generate the tooltip
+	 * 
 	 * @param {Object} obj : the tooltip object
+	 * @param {Integer} index : current tooltip index
 	 */
 	function generateToolTip(obj,index) {
-		var title = $.trim($(obj).attr("data-tooltip-title")), 
+		var title = $.trim($(obj).attr("data-tooltip")), 
 			toolTipContent = null, toolTipPlugin = $(".tooltip-plugin_"+index),
 			toolTip = $('<div class="tooltip-plugin">' +
 							'<div class="tooltip-plugin-content"></div>' + 
@@ -239,6 +242,8 @@ $.fn.toolTip = function(options) {
 
 	/**
 	 * Hide the tooltip
+	 * 
+	 * @param {Integer} index : current tooltip index. If cache,hide the tooltip else remove the tooltip.
 	 */
 	function hideToolTip(index) {
 		if(options.cache){
