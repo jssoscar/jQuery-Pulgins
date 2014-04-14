@@ -1,4 +1,4 @@
-.tooltip-plugin{position: absolute;padding: 5px 10px;text-align: left;z-index: 5;border-radius: 5px;display: inline-block}
+.tooltip-plugin{position: absolute;padding: 5px 10px;text-align: left;z-index: 10000;border-radius: 5px;display: inline-block}
 .tooltip-outer-triangle, .tooltip-inner-triangle {border-style: solid dashed;width: 0;height: 0;font-size: 0;line-height: 0;position: absolute;}
 /**
  *  Top tooltip triangle
@@ -54,3 +54,36 @@
 /** Horizontal style : left and right **/
 .tooltip-plugin-style-lightyellow .tooltip-outer-triangle-horizontal{border-color: transparent #ecd181;}
 .tooltip-plugin-style-lightyellow .tooltip-outer-triangle-horizontal .tooltip-inner-triangle{border-color: transparent #fcf8e9;}
+
+/**
+ * 	Light blue style
+ */
+.tooltip-plugin-style-lightblue{border: 1px solid #abcce6;background-color: #abcce6;}
+/** Vertical style : top && bottom **/
+.tooltip-plugin-style-lightblue .tooltip-outer-triangle-vertical{border-color: #abcce6 transparent}
+.tooltip-plugin-style-lightblue .tooltip-outer-triangle-vertical .tooltip-inner-triangle{border-color: #abcce6 transparent}
+/** Horizontal style : left and right **/
+.tooltip-plugin-style-lightblue .tooltip-outer-triangle-horizontal{border-color: transparent #abcce6;}
+.tooltip-plugin-style-lightblue .tooltip-outer-triangle-horizontal .tooltip-inner-triangle{border-color: transparent #abcce6;}
+
+/**
+ * 	Light green style
+ */
+.tooltip-plugin-style-lightgreen{border: 1px solid #deefb8;background-color: #deefb8;}
+/** Vertical style : top && bottom **/
+.tooltip-plugin-style-lightgreen .tooltip-outer-triangle-vertical{border-color: #deefb8 transparent}
+.tooltip-plugin-style-lightgreen .tooltip-outer-triangle-vertical .tooltip-inner-triangle{border-color: #deefb8 transparent}
+/** Horizontal style : left and right **/
+.tooltip-plugin-style-lightgreen .tooltip-outer-triangle-horizontal{border-color: transparent #deefb8;}
+.tooltip-plugin-style-lightgreen .tooltip-outer-triangle-horizontal .tooltip-inner-triangle{border-color: transparent #deefb8;}
+
+/**
+ * 	dark style
+ */
+.tooltip-plugin-style-dark{border: 1px solid #303030;background-color: #505050;color: #FFF}
+/** Vertical style : top && bottom **/
+.tooltip-plugin-style-dark .tooltip-outer-triangle-vertical{border-color: #303030 transparent}
+.tooltip-plugin-style-dark .tooltip-outer-triangle-vertical .tooltip-inner-triangle{border-color: #505050 transparent}
+/** Horizontal style : left and right **/
+.tooltip-plugin-style-dark .tooltip-outer-triangle-horizontal{border-color: transparent #303030;}
+.tooltip-plugin-style-dark .tooltip-outer-triangle-horizontal .tooltip-inner-triangle{border-color: transparent #505050;}
