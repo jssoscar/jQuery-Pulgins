@@ -48,15 +48,20 @@
  * Date			2014-4-10 09:17:50
  * Changelog	. Fixed the bug
  * 
- * Version		1.1
+ * Version		1.0.6
  * Date			2014-4-10 10:08:00
  * Changelog	. Fixed the bug when parameter "cache" is "true"
+ * 
+ * Version		1.1
+ * Date			2014-4-15 13:36:23
+ * Changelog	. Add parameter "effectSpeed" to controll the show effect speed
+ * 				. Fixed the bug when tooltip is not visible
  */
 
 /**
  * Define the tooltip cache controller object 
  */
-$.toolTipCacheController = {
+var toolTipCacheController = {
 	cacheCount : 0
 };
 
@@ -70,6 +75,7 @@ $.toolTipCacheController = {
  * 		@param {Number} offset : the tooltip offset.Default is 10.
  * 		@param {String} style : the customer style for the tooltip
  * 		@param {String} effect : the effect for the tooltip.Default is "show".
+ * 		@param {Number} effectSpeed : the effect speed
  * 		@param {Boolean} cache : whether cache the tooltip.Default is "false".
  */
 $.fn.toolTip = function(options) {
@@ -89,6 +95,12 @@ $.fn.toolTip = function(options) {
 		effect : {
 			show : "show",
 			fade : "fadeIn"
+		},
+		triangleStyle : {
+			left : "horizontal",
+			right : "horizontal",
+			top : "vertical",
+			bottom : "vertical"
 		}
 	};
 
@@ -98,9 +110,10 @@ $.fn.toolTip = function(options) {
 			trigger : toolTipController.eventType.hover, 
 			direction : "top", 
 			content : null, 
-			offset : 10, 
+			offset : 12, 
 			style : "default", 
 			effect : "show", 
+			effectSpeed : 0,
 			cache : false
 		};
 		$.extend(defaultCfg, options);
@@ -121,6 +134,8 @@ $.fn.toolTip = function(options) {
 		}else if(defaultCfg.effect === "fade"){
 			defaultCfg.effect = toolTipController.effect.fade;
 		}
+		
+		defaultCfg.effectSpeed = defaultCfg.effectSpeed * 1e3;
 
 		options = defaultCfg;
 	})();
@@ -130,7 +145,7 @@ $.fn.toolTip = function(options) {
 		var _this = this,index = -1;
 		
 		if(options.cache){
-			index = $.toolTipCacheController.cacheCount++;
+			index = toolTipCacheController.cacheCount++;
 		}
 
 		// Bind event handler
@@ -165,37 +180,57 @@ $.fn.toolTip = function(options) {
 	/**
 	 * Calculate the direction for the tooltip
 	 * 
-	 * @param {Object} options : the tooltip configuration
 	 * @param {Object} toolTipObj : the tooltip object
 	 * @param {Object} toolTip : the tooltip
 	 */
 	function calculateDirection(toolTipObj, toolTip) {
+		var directionInfo = {
+			direction : options.direction,
+			position : {}
+		},top, left,winWidth = $(window).width();
 		switch(options.direction) {
 			case "left" : {
-				return {
-					"top" : $(toolTipObj).offset().top - $(toolTip).outerHeight() / 2 + $(toolTipObj).outerHeight() / 2,
-					"left" : $(toolTipObj).offset().left - toolTip.outerWidth() - options.offset
-				};
+				top = $(toolTipObj).offset().top - $(toolTip).outerHeight() / 2 + $(toolTipObj).outerHeight() / 2;
+				left = $(toolTipObj).offset().left - toolTip.outerWidth() - options.offset;
+				if(left < 0){
+					left = $(toolTipObj).offset().left + $(toolTipObj).outerWidth() + options.offset;
+					directionInfo.direction = "right";
+				}
+				break;
 			}
 			case "right" : {
-				return {
-					"top" : $(toolTipObj).offset().top - $(toolTip).outerHeight() / 2 + $(toolTipObj).outerHeight() / 2,
-					"left" : $(toolTipObj).offset().left + $(toolTipObj).outerWidth() + options.offset
-				};
+				top = $(toolTipObj).offset().top - $(toolTip).outerHeight() / 2 + $(toolTipObj).outerHeight() / 2;
+				left = $(toolTipObj).offset().left + $(toolTipObj).outerWidth() + options.offset;
+				if(left > winWidth){
+					left = $(toolTipObj).offset().left - toolTip.outerWidth() - options.offset;
+					directionInfo.direction = "left";
+				}
+				break;
 			}
 			case "top" : {
-				return {
-					"top" : $(toolTipObj).offset().top - options.offset - $(toolTip).outerHeight(),
-					"left" : $(toolTipObj).offset().left - toolTip.outerWidth() / 2 + $(toolTipObj).outerWidth() / 2
-				};
+				top = $(toolTipObj).offset().top - options.offset - $(toolTip).outerHeight();
+				left = $(toolTipObj).offset().left - toolTip.outerWidth() / 2 + $(toolTipObj).outerWidth() / 2;
+				if(top < 0){
+					top = $(toolTipObj).offset().top + options.offset + toolTip.outerHeight();
+					directionInfo.direction = "bottom";
+				}
+				break;
 			}
 			case "bottom" : {
-				return {
-					"top" : $(toolTipObj).offset().top + options.offset + toolTip.outerHeight(),
-					"left" : $(toolTipObj).offset().left - toolTip.outerWidth() / 2 + $(toolTipObj).outerWidth() / 2
-				};
+				top = $(toolTipObj).offset().top + options.offset + toolTip.outerHeight();
+				left = $(toolTipObj).offset().left - toolTip.outerWidth() / 2 + $(toolTipObj).outerWidth() / 2;
+				if(top > winWidth){
+					top = $(toolTipObj).offset().top - options.offset - $(toolTip).outerHeight();
+					directionInfo.direction = "top";
+				}
+				break;
 			}
 		}
+		directionInfo.position = {
+			top : top < 0 ? 0 : top,
+			left : left < 0 ? 0 : left
+		};
+		return directionInfo;
 	}
 
 	/**
@@ -215,7 +250,7 @@ $.fn.toolTip = function(options) {
 						'</div>');
 
 		if (toolTipPlugin[0] && options.cache) {
-			toolTipPlugin[options.effect]();
+			showToolTip(true,toolTipPlugin);
 			return;
 		}
 
@@ -227,17 +262,32 @@ $.fn.toolTip = function(options) {
 			return;
 		}
 
-		toolTip.addClass("tooltip-plugin_"+index + " tooltip-plugin-" + options.direction + " tooltip-plugin-style-" + options.style).hide();
 		toolTip.find(".tooltip-plugin-content").html(toolTipContent);
-		if(options.direction === "top" || options.direction === "bottom"){
-			toolTip.find(".tooltip-outer-triangle").addClass("tooltip-outer-triangle-vertical");
-		}else{
-			toolTip.find(".tooltip-outer-triangle").addClass("tooltip-outer-triangle-horizontal");
-		}
 		toolTip.appendTo($("body"));
 		toolTipPlugin = $("tooltip-plugin_"+options.index);
-		toolTip.css(calculateDirection(obj, toolTip));
-		toolTip[options.effect]();
+		
+		var directionInfo = calculateDirection(obj, toolTip);
+		toolTip.addClass("tooltip-plugin_"+index + " tooltip-plugin-" + directionInfo.direction + " tooltip-plugin-style-" + options.style).hide();
+		toolTip.find(".tooltip-outer-triangle").addClass("tooltip-outer-triangle-" + toolTipController.triangleStyle[directionInfo.direction]);
+		toolTip.css(directionInfo.position)[options.effect]();
+	}
+	
+	/**
+	 * Show the tooltip
+	 * 
+	 * @param {Boolean} toolTipExist : whether the tooltip exist
+	 * @param {Object} toolTipObj : the node for tooltip
+	 * @param {Object} toolTip : the tool tip object 
+	 */
+	function showToolTip(toolTipExist,toolTipObj,toolTip){
+		if(toolTipExist){
+			$(toolTipObj)[options.effect](options.effectSpeed);
+		}else{
+			var directionInfo = calculateDirection(toolTipObj, toolTip);
+			$(toolTip).addClass("tooltip-plugin_"+index + " tooltip-plugin-" + directionInfo.direction + " tooltip-plugin-style-" + options.style).hide();
+			$(toolTip).find(".tooltip-outer-triangle").addClass("tooltip-outer-triangle-" + toolTipController.triangleStyle[directionInfo.direction]);
+			$(toolTip).css(directionInfo.position)[options.effect](options.effectSpeed);
+		}
 	}
 
 	/**
