@@ -1,4 +1,4 @@
-.tooltip-plugin{position: absolute;padding: 5px 10px;text-align: left;z-index: 10000;border-radius: 5px;display: inline-block}
+.tooltip-plugin{position: absolute;padding: 5px 10px;text-align: left;border-radius: 5px;display: inline-block}
 .tooltip-outer-triangle, .tooltip-inner-triangle {border-style: solid dashed;width: 0;height: 0;font-size: 0;line-height: 0;position: absolute;}
 /**
  *  Top tooltip triangle
