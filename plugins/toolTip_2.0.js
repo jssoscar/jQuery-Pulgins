@@ -85,7 +85,7 @@ var toolTipCacheController = {
  * 		@param {String} trigger : the tooltip trigger event,support hover,focus,click.Default is "hover".
  * 		@param {String} direction : the tooltip direction,support left,right,top,bottom.Default is "top".
  * 		@param {String} content : the tooltip content.Here,support two type : the "data-tooltip" and HTML content.
- * 		@param {Number} offset : the tooltip offset.Default is 10.
+ * 		@param {Number} offset : the tooltip offset.Default is 12.
  * 		@param {String} style : the customer style for the tooltip
  * 		@param {String} effect : the effect for the tooltip.Default is "show".
  * 		@param {Number} effectSpeed : the effect speed
