@@ -92,22 +92,22 @@ $.toolTipController = {
 			hover : "hover",
 			focus : "focus"
 		},
-		direction : {
-			left : "left",
-			right : "right",
-			top : "top",
-			bottom : "bottom"
-		},
-		effect : {
-			show : "show",
-			fade : "fadeIn"
-		},
-		triangleStyle : {
-			left : "horizontal",
-			right : "horizontal",
-			top : "vertical",
-			bottom : "vertical"
-		}
+	direction : {
+		left : "left",
+		right : "right",
+		top : "top",
+		bottom : "bottom"
+	},
+	effect : {
+		show : "show",
+		fade : "fadeIn"
+	},
+	triangleStyle : {
+		left : "horizontal",
+		right : "horizontal",
+		top : "vertical",
+		bottom : "vertical"
+	}
 };
 
 /**
