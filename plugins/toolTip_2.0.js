@@ -79,23 +79,15 @@ var toolTipCacheController = {
 };
 
 /**
- * Define the tooltip function
- *
- * @param {Object} options : the toolitip configuration
- * 		@param {String} trigger : the tooltip trigger event,support hover,focus,click.Default is "hover".
- * 		@param {String} direction : the tooltip direction,support left,right,top,bottom.Default is "top".
- * 		@param {String} content : the tooltip content.Here,support two type : the "data-tooltip" and HTML content.
- * 		@param {Number} offset : the tooltip offset.Default is 12.
- * 		@param {String} style : the customer style for the tooltip
- * 		@param {String} effect : the effect for the tooltip.Default is "show".
- * 		@param {Number} effectSpeed : the effect speed
- * 		@param {Boolean} cache : whether cache the tooltip.Default is "false".
- * 		@param {Object} triangleStyle : the style for the triangle
+ * Define the tooltip controller
+ * 
+ * eventType : the supported tooltip event
+ * direction : the tooltip direction
+ * effect : the tooltip display effect
+ * triangleStyle : the triangle style
  */
-$.fn.toolTip = function(options) {
-	// Define the tooltip controller
-	var toolTipController = {
-		eventType : {
+$.toolTipController = {
+	eventType : {
 			click : "click",
 			hover : "hover",
 			focus : "focus"
@@ -116,12 +108,27 @@ $.fn.toolTip = function(options) {
 			top : "vertical",
 			bottom : "vertical"
 		}
-	};
+};
 
+/**
+ * Define the tooltip function
+ *
+ * @param {Object} options : the toolitip configuration
+ * 		@param {String} trigger : the tooltip trigger event,support hover,focus,click.Default is "hover".
+ * 		@param {String} direction : the tooltip direction,support left,right,top,bottom.Default is "top".
+ * 		@param {String} content : the tooltip content.Here,support two type : the "data-tooltip" and HTML content.
+ * 		@param {Number} offset : the tooltip offset.Default is 12.
+ * 		@param {String} style : the customer style for the tooltip
+ * 		@param {String} effect : the effect for the tooltip.Default is "show".
+ * 		@param {Number} effectSpeed : the effect speed
+ * 		@param {Boolean} cache : whether cache the tooltip.Default is "false".
+ * 		@param {Object} triangleStyle : the style for the triangle
+ */
+$.fn.toolTip = function(options) {
 	// Deal with the configuration
 	(function() {
 		var defaultCfg = {
-			trigger : toolTipController.eventType.hover, 
+			trigger : $.toolTipController.eventType.hover, 
 			direction : "top", 
 			content : null, 
 			offset : 12, 
@@ -134,20 +141,20 @@ $.fn.toolTip = function(options) {
 		$.extend(defaultCfg, options);
 
 		// Deal with the event type
-		if (!toolTipController.eventType[defaultCfg.trigger]) {
-			defaultCfg.trigger = toolTipController.eventType.hover;
+		if (!$.toolTipController.eventType[defaultCfg.trigger]) {
+			defaultCfg.trigger = $.toolTipController.eventType.hover;
 		}
 
 		// Deal with the direction
-		if (!toolTipController.direction[defaultCfg.direction]) {
-			defaultCfg.direction = toolTipController.direction.top;
+		if (!$.toolTipController.direction[defaultCfg.direction]) {
+			defaultCfg.direction = $.toolTipController.direction.top;
 		}
 		
 		// Deal with the tooltip effect
-		if(!toolTipController.effect[defaultCfg.effect]){
-			defaultCfg.effect = toolTipController.effect.show;
+		if(!$.toolTipController.effect[defaultCfg.effect]){
+			defaultCfg.effect = $.toolTipController.effect.show;
 		}else if(defaultCfg.effect === "fade"){
-			defaultCfg.effect = toolTipController.effect.fade;
+			defaultCfg.effect = $.toolTipController.effect.fade;
 		}
 		
 		defaultCfg.effectSpeed = defaultCfg.effectSpeed * 1e3;
@@ -298,7 +305,7 @@ $.fn.toolTip = function(options) {
 		}else{
 			var directionInfo = calculateDirection(toolTipObj, toolTip);
 			$(toolTip).addClass("tooltip-plugin_"+index + " tooltip-plugin-" + directionInfo.direction + " tooltip-plugin-style-" + options.toolTipStyle).hide();
-			$(toolTip).find(".tooltip-outer-triangle").addClass("tooltip-outer-triangle-" + toolTipController.triangleStyle[directionInfo.direction]).css(options.triangleStyle);
+			$(toolTip).find(".tooltip-outer-triangle").addClass("tooltip-outer-triangle-" + $.toolTipController.triangleStyle[directionInfo.direction]).css(options.triangleStyle);
 			$(toolTip).css(directionInfo.position)[options.effect](options.effectSpeed);
 		}
 	}
