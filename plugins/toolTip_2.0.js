@@ -13,8 +13,8 @@
  * Version		1.0.2
  * Date			2014-4-9 09:53:55
  * Changelog	.	Fixed the bug
- * 				.	Support cache the tooltip
- * 				.	Support the customer style for the tool tip
+ * 				.	Support the customer style for the tool tip.If you want to use your style,modify the toolTip_2.0.css.
+ * 					.tooltip-plugin-style-gray,here the "gray" is your tooltip style name. See the toolTip_2.0.css file.
  * Usage		$(function(){
 					 $(".tip").toolTip({
 						 direction : "bottom",
@@ -69,6 +69,11 @@
 						top : 10
 					}
 				});
+ *
+ * Version		2.0.1
+ * Date			2014-4-21 14:54:04
+ * Changelog	. Optimize the code
+ * 				. Fixed the bug : when DOM changed or the tooltip DOM element width/height changed,recalculate the tooltip position.
  */
 
 /**
@@ -272,7 +277,7 @@ $.fn.toolTip = function(options) {
 						'</div>');
 
 		if (toolTipPlugin[0] && options.cache) {
-			showToolTip(true,toolTipPlugin);
+			showToolTip(true,obj,toolTipPlugin);
 			return;
 		}
 
@@ -300,14 +305,12 @@ $.fn.toolTip = function(options) {
 	 * @param {Number} index : current tooltip index
 	 */
 	function showToolTip(toolTipExist,toolTipObj,toolTip,index){
-		if(toolTipExist){
-			$(toolTipObj)[options.effect](options.effectSpeed);
-		}else{
-			var directionInfo = calculateDirection(toolTipObj, toolTip);
+		var directionInfo = calculateDirection(toolTipObj, toolTip);
+		if(!toolTipExist){
 			$(toolTip).addClass("tooltip-plugin_"+index + " tooltip-plugin-" + directionInfo.direction + " tooltip-plugin-style-" + options.toolTipStyle).hide();
 			$(toolTip).find(".tooltip-outer-triangle").addClass("tooltip-outer-triangle-" + $.toolTipController.triangleStyle[directionInfo.direction]).css(options.triangleStyle);
-			$(toolTip).css(directionInfo.position)[options.effect](options.effectSpeed);
 		}
+		$(toolTip).css(directionInfo.position)[options.effect](options.effectSpeed);
 	}
 
 	/**
