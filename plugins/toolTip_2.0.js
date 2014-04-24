@@ -74,13 +74,18 @@
  * Date			2014-4-21 14:54:04
  * Changelog	. Optimize the code
  * 				. Fixed the bug : when DOM changed or the tooltip DOM element width/height changed,recalculate the tooltip position.
+ * 
+ * Version		2.0.2
+ * Date			2014-4-24 15:18:36
+ * Changelog	. Add z-index style for the tooltip element
  */
 
 /**
  * Define the tooltip cache controller object 
  */
 var toolTipCacheController = {
-	cacheCount : 0
+	cacheCount : 0,
+	zIndex : 99999
 };
 
 /**
@@ -169,7 +174,7 @@ $.fn.toolTip = function(options) {
 
 	// Handler for the tooltip content
 	$(this).each(function() {
-		var _this = this,index = -1;
+		var _this = this,index = -1,zIndex = toolTipCacheController.zIndex++;
 		
 		if(options.cache){
 			index = toolTipCacheController.cacheCount++;
@@ -178,13 +183,13 @@ $.fn.toolTip = function(options) {
 		// Bind event handler
 		if (options.trigger === "hover") {
 			$(_this).hover(function() {
-				generateToolTip($(this),index);
+				generateToolTip($(this),index,zIndex);
 			}, function() {
 				hideToolTip(index);
 			});
 		} else if(options.trigger === "focus"){
 			$(this).focusin(function(){
-				generateToolTip($(this),index);
+				generateToolTip($(this),index,zIndex);
 			}).focusout(function() {
 				hideToolTip(index);
 			});
@@ -192,7 +197,7 @@ $.fn.toolTip = function(options) {
 			$(_this).bind("mouseout " + options.trigger, function(event) {
 				switch(event.type) {
 					case options.trigger : {
-						generateToolTip($(this),index);
+						generateToolTip($(this),index,zIndex);
 						break;
 					}
 					case "mouseout" : {
@@ -210,10 +215,10 @@ $.fn.toolTip = function(options) {
 	 * @param {Object} toolTipObj : the tooltip object
 	 * @param {Object} toolTip : the tooltip
 	 */
-	function calculateDirection(toolTipObj, toolTip) {
+	function calculateDirection(toolTipObj, toolTip, zIndex) {
 		var directionInfo = {
 			direction : options.direction,
-			position : {}
+			position : {},
 		},top, left,winWidth = $(window).width();
 		switch(options.direction) {
 			case "left" : {
@@ -255,7 +260,8 @@ $.fn.toolTip = function(options) {
 		}
 		directionInfo.position = {
 			top : top < 0 ? 0 : top,
-			left : left < 0 ? 0 : left
+			left : left < 0 ? 0 : left,
+			"z-index" : zIndex
 		};
 		return directionInfo;
 	}
@@ -266,7 +272,7 @@ $.fn.toolTip = function(options) {
 	 * @param {Object} obj : the tooltip object
 	 * @param {Integer} index : current tooltip index
 	 */
-	function generateToolTip(obj,index) {
+	function generateToolTip(obj,index,zIndex) {
 		var title = $.trim($(obj).attr("data-tooltip")), 
 			toolTipContent = null, toolTipPlugin = $(".tooltip-plugin_"+index),
 			toolTip = $('<div class="tooltip-plugin">' +
@@ -277,7 +283,7 @@ $.fn.toolTip = function(options) {
 						'</div>');
 
 		if (toolTipPlugin[0] && options.cache) {
-			showToolTip(true,obj,toolTipPlugin);
+			showToolTip(true,obj,toolTipPlugin,index,zIndex);
 			return;
 		}
 
@@ -293,7 +299,7 @@ $.fn.toolTip = function(options) {
 		toolTip.appendTo($("body"));
 		toolTipPlugin = $("tooltip-plugin_"+options.index);
 		
-		showToolTip(false,obj,toolTip,index);
+		showToolTip(false,obj,toolTip,index,zIndex);
 	}
 	
 	/**
@@ -303,9 +309,10 @@ $.fn.toolTip = function(options) {
 	 * @param {Object} toolTipObj : the node for tooltip
 	 * @param {Object} toolTip : the tool tip object
 	 * @param {Number} index : current tooltip index
-	 */
-	function showToolTip(toolTipExist,toolTipObj,toolTip,index){
-		var directionInfo = calculateDirection(toolTipObj, toolTip);
+	 * @param {Number} zIndex : current element z-index
+ 	 */
+	function showToolTip(toolTipExist,toolTipObj,toolTip,index,zIndex){
+		var directionInfo = calculateDirection(toolTipObj, toolTip,zIndex);
 		if(!toolTipExist){
 			$(toolTip).addClass("tooltip-plugin_"+index + " tooltip-plugin-" + directionInfo.direction + " tooltip-plugin-style-" + options.toolTipStyle).hide();
 			$(toolTip).find(".tooltip-outer-triangle").addClass("tooltip-outer-triangle-" + $.toolTipController.triangleStyle[directionInfo.direction]).css(options.triangleStyle);
