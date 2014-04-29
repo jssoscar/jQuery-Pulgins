@@ -323,7 +323,7 @@ $.fn.toolTip = function(options) {
 		var directionInfo = calculateDirection(toolTipObj, toolTip,zIndex);
 		if(!toolTipExist){
 			toolTip.addClass("tooltip-plugin_"+index + " tooltip-plugin-" + directionInfo.direction + " tooltip-plugin-style-" + options.toolTipStyle).hide();
-			toolTip.find(".tooltip-outer-triangle").addClass("tooltip-outer-triangle-" + $.toolTipController.triangleStyle[directionInfo.direction]).css(options.triangleStyle);
+			toolTip.find(".tooltip-outer-triangle").addClass("tooltip-outer-triangle-default tooltip-outer-triangle-" + $.toolTipController.triangleStyle[directionInfo.direction]).css(options.triangleStyle);
 			if(options.cache){
 				toolTipCacheController.toolTips[index] = toolTip;
 			}
@@ -337,10 +337,10 @@ $.fn.toolTip = function(options) {
 	 * @param {Integer} index : current tooltip index. If cache,hide the tooltip else remove the tooltip.
 	 */
 	function hideToolTip(index) {
-		if(options.cache){
-			toolTipCacheController.toolTips[index].hide();
-		}else{
-			$(".tooltip-plugin_"+index).remove();
-		}
+		// if(options.cache){
+			// toolTipCacheController.toolTips[index].hide();
+		// }else{
+			// $(".tooltip-plugin_"+index).remove();
+		// }
 	}
 };
