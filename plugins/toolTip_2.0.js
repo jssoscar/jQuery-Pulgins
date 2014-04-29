@@ -337,10 +337,10 @@ $.fn.toolTip = function(options) {
 	 * @param {Integer} index : current tooltip index. If cache,hide the tooltip else remove the tooltip.
 	 */
 	function hideToolTip(index) {
-		// if(options.cache){
-			// toolTipCacheController.toolTips[index].hide();
-		// }else{
-			// $(".tooltip-plugin_"+index).remove();
-		// }
+		if(options.cache){
+			toolTipCacheController.toolTips[index].hide();
+		}else{
+			$(".tooltip-plugin_"+index).remove();
+		}
 	}
 };
