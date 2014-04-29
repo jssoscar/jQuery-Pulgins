@@ -78,14 +78,23 @@
  * Version		2.0.2
  * Date			2014-4-24 15:18:36
  * Changelog	. Add z-index style for the tooltip element
+ * 
+ * Version		2.0.3
+ * Date			2014-4-29 14:29:28
+ * Changelog	. Add tooltip cache array to cache the tooltip element
  */
 
 /**
- * Define the tooltip cache controller object 
+ * Define the tooltip cache controller object
+ * 
+ * cacheCount : the count for cached tooltip
+ * zIndex : the z-index style for the tooltip
+ * toolTips : the tooltips for cache
  */
 var toolTipCacheController = {
 	cacheCount : 0,
-	zIndex : 99999
+	zIndex : 99999,
+	toolTips : {}
 };
 
 /**
@@ -274,7 +283,7 @@ $.fn.toolTip = function(options) {
 	 */
 	function generateToolTip(obj,index,zIndex) {
 		var title = $.trim($(obj).attr("data-tooltip")), 
-			toolTipContent = null, toolTipPlugin = $(".tooltip-plugin_"+index),
+			toolTipContent = null, toolTipPlugin = $(toolTipCacheController.toolTips[index]),
 			toolTip = $('<div class="tooltip-plugin">' +
 							'<div class="tooltip-plugin-content"></div>' + 
 							'<div class="tooltip-outer-triangle">' + 
@@ -297,8 +306,7 @@ $.fn.toolTip = function(options) {
 
 		toolTip.find(".tooltip-plugin-content").html(toolTipContent);
 		toolTip.appendTo($("body"));
-		toolTipPlugin = $("tooltip-plugin_"+options.index);
-		
+		toolTipPlugin = $(".tooltip-plugin_"+index);
 		showToolTip(false,obj,toolTip,index,zIndex);
 	}
 	
@@ -314,8 +322,11 @@ $.fn.toolTip = function(options) {
 	function showToolTip(toolTipExist,toolTipObj,toolTip,index,zIndex){
 		var directionInfo = calculateDirection(toolTipObj, toolTip,zIndex);
 		if(!toolTipExist){
-			$(toolTip).addClass("tooltip-plugin_"+index + " tooltip-plugin-" + directionInfo.direction + " tooltip-plugin-style-" + options.toolTipStyle).hide();
-			$(toolTip).find(".tooltip-outer-triangle").addClass("tooltip-outer-triangle-" + $.toolTipController.triangleStyle[directionInfo.direction]).css(options.triangleStyle);
+			toolTip.addClass("tooltip-plugin_"+index + " tooltip-plugin-" + directionInfo.direction + " tooltip-plugin-style-" + options.toolTipStyle).hide();
+			toolTip.find(".tooltip-outer-triangle").addClass("tooltip-outer-triangle-" + $.toolTipController.triangleStyle[directionInfo.direction]).css(options.triangleStyle);
+			if(options.cache){
+				toolTipCacheController.toolTips[index] = toolTip;
+			}
 		}
 		$(toolTip).css(directionInfo.position)[options.effect](options.effectSpeed);
 	}
@@ -327,7 +338,7 @@ $.fn.toolTip = function(options) {
 	 */
 	function hideToolTip(index) {
 		if(options.cache){
-			$(".tooltip-plugin_"+index).hide();
+			toolTipCacheController.toolTips[index].hide();
 		}else{
 			$(".tooltip-plugin_"+index).remove();
 		}
