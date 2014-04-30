@@ -15,7 +15,7 @@
  * 	Left tooltip triangle
  */
 .tooltip-plugin-left .tooltip-outer-triangle{margin: -10px 0 0 0;right: -10px;top: 50%;border-width: 10px 0 10px 10px;}
-.tooltip-plugin-left .tooltip-inner-triangle{bottom: -10px;left: -10px;border-width: 9px 0 9px 9px;}
+.tooltip-plugin-left .tooltip-inner-triangle{bottom: -9px;left: -10px;border-width: 9px 0 9px 9px;}
 /**
  * 	Right tooltip triangle
  */
