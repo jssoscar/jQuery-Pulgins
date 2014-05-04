@@ -141,8 +141,7 @@ OperWithLoading.prototype = {
 			"top" : 0,
 			"z-index" : 998,
 			"width" : this.options.overlayWidth,
-			"height" : this.options.overlayHeight,
-			"display" : "none"
+			"height" : this.options.overlayHeight
 		};
 	},
 	_dealLoading : function(){
@@ -154,8 +153,7 @@ OperWithLoading.prototype = {
 			"z-index" : 999,
 			"margin" : "-" + parseInt(this.options.loadingHeight / 2, 10) + "px 0 0 -" + parseInt(this.options.loadingWidth / 2, 10)+"px",
 			"width" : this.options.loadingWidth,
-			"height" : this.options.loadingHeight,
-			"display" : "none"
+			"height" : this.options.loadingHeight
 		};
 	},
 	show : function() {
