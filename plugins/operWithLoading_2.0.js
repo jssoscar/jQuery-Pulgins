@@ -14,6 +14,10 @@
  * Changelog	.	Optimize the code
  * 				.	Remove the showOverlay/showLoading method
  * 				.	Add hide method to hide the loading element
+ * 
+ * Version		2.0.3.1
+ * Date			2014-5-4 18:04:52
+ * Changelog	.	Fixed the bug when append the overlay/loading element
  */
 
 /**
@@ -41,6 +45,8 @@ function OperWithLoading(container, options) {
 		this.overlay = $('<iframe frameBorder="0"></iframe>');
 		this.hideable = true;
 		this.removed = false;
+		this.overlay.css("display","none").appendTo(this.container);
+		this.loading.css("display","none").appendTo(this.container);
 		return this;
 	} else {
 		return new OperWithLoading(container, options);
@@ -162,10 +168,10 @@ OperWithLoading.prototype = {
 				this.container.css("position", "relative");
 			}
 			if(this.options.overlay){
-				this.overlay.css(this._dealOverlay()).appendTo(this.container).show(this.options.speed);
+				this.overlay.css(this._dealOverlay()).show(this.options.speed);
 			}
 			if(this.options.loading){
-				this.loading.css(this._dealLoading()).addClass(this.options.className).appendTo(this.container).show(this.options.speed);
+				this.loading.css(this._dealLoading()).addClass(this.options.className).show(this.options.speed);
 			}
 		}
 	},
