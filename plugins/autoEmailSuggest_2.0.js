@@ -15,6 +15,12 @@
  * Changelog	. Add key UP,key DOWN handler to switch the suggest email
  * 				. Add the key Enter handler to set the email value
  * 				. Fixed the bug when filter the email
+ * 
+ * Version		2.0.1
+ * Date			2014-5-5 11:14:59
+ * Changelog	. Fixed the bug when trigger keydown event handler
+ * 				. Fixed the bug when focus in the input
+ * 				. Optimize the code
  */
 $.fn.autoEmailSuggest = function(options) {
 	/**
@@ -65,8 +71,8 @@ $.fn.autoEmailSuggest = function(options) {
 				controller.current = 0;
 			}
 		}
-		obj.find("ul li:eq(" + controller.current + ")").css("background-color", config.mouseoverColor)
-			.siblings().css("background-color", config.mouseoutColor);
+		obj.find("ul li:eq(" + controller.current + ")").css("background-color", config.mouseoverColor).addClass("currentEmail")
+			.siblings().css("background-color", config.mouseoutColor).removeClass("currentEmail");
 	};
 
 	/**
@@ -102,12 +108,13 @@ $.fn.autoEmailSuggest = function(options) {
 		 * . Deal with the style
 		 * . Insert the email suggest block after the input
 		 */
+		var outerWidth = _email.outerWidth();
 		emailSuggest.css({
 			"position" : "absolute",
 			"left" : _email.position().left,
 			"top" : _email.offset().top - parent.offset().top + _email.outerHeight(),
-			"_width" : _email.width(),
-			"min-width" : _email.width()
+			"_width" : outerWidth,
+			"min-width" : outerWidth
 		}).hide().insertAfter(_email);
 
 		/**
@@ -158,18 +165,13 @@ $.fn.autoEmailSuggest = function(options) {
 									break;
 								}
 								case 13 : {// Enter
-									emailSuggest.find("ul li:eq(" + controller.current + ")").trigger("mousedown");
+									emailSuggest.find("ul li.currentEmail").trigger("mousedown");
 									break;
 								}
 							}
 						}
 					} else {
 						_email.trigger("focus");
-						if (emailVal) {
-							emailSuggest.empty().html(generateEmailSuggest(emailVal)).show();
-						} else {
-							emailSuggest.empty().hide();
-						}
 					}
 					break;
 				}
@@ -186,6 +188,11 @@ $.fn.autoEmailSuggest = function(options) {
 						} else {
 							dealPlaceholder(_email, emailVal);
 						}
+					}
+					if (emailVal) {
+						emailSuggest.empty().html(generateEmailSuggest(emailVal)).show();
+					} else {
+						emailSuggest.empty().hide();
 					}
 					break;
 				}
