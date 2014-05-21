@@ -30,20 +30,14 @@ var currentUserAgent = navigator.userAgent.toLowerCase(),
  */
 $.fn.download4Wechat = function(options) {
 	$(this).each(function() {
-		var _this = $(this), target = $.trim(_this.attr("target"));
+		var _this = $(this);
 		_this.bind("click", function(event) {
-			event.preventDefault();
 			if (isMicroMessager) {
+				event.preventDefault();
 				if (isIOS) {
 					loaction.href = options.ios;
 				} else {
 					loaction.href = options.other;
-				}
-			} else {
-				if (target === "_blank") {
-					window.open(_this.attr("href"));
-				} else {
-					loaction.href = _this.attr("href");
 				}
 			}
 		});
