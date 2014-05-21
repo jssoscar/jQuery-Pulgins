@@ -185,3 +185,9 @@ Date : 2014-1-10 16:01:07
 Description : jQuery plugin for the lazy load image
 
 Date : 2014-2-28 15:44:53
+
+==== download4Wechat.js ====
+
+Description : download link plugin for wechat
+
+Date : 2014-5-21 10:44:33
