@@ -18,8 +18,8 @@
  * Judgement the user agent
  */
 var currentUserAgent = navigator.userAgent.toLowerCase(),
-	isMicroMessager = /micromessenger/.test(userAgent),
-	isIOS = /iphone|ipod/.test(userAgent);
+	isMicroMessager = /micromessenger/.test(currentUserAgent),
+	isIOS = /iphone|ipod/.test(currentUserAgent);
 
 /**
  * the download link for wechat
