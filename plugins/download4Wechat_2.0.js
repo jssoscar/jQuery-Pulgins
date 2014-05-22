@@ -35,9 +35,9 @@ $.fn.download4Wechat = function(options) {
 			if (isMicroMessager) {
 				event.preventDefault();
 				if (isIOS) {
-					loaction.href = options.ios;
+					location.href = options.ios;
 				} else {
-					loaction.href = options.other;
+					location.href = options.other;
 				}
 			}
 		});
