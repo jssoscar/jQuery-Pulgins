@@ -82,6 +82,11 @@
  * Version		2.0.3
  * Date			2014-4-29 14:29:28
  * Changelog	. Add tooltip cache array to cache the tooltip element
+ * 
+ * Version		2.0.4
+ * Date			2014-6-9 14:39:55
+ * Changelog	.	Add the loaded event : show the tooltip after DOM ready
+ * 				.	Optimize the code 
  */
 
 /**
@@ -109,7 +114,8 @@ $.toolTipController = {
 	eventType : {
 			click : "click",
 			hover : "hover",
-			focus : "focus"
+			focus : "focus",
+			loaded : "loaded"
 		},
 	direction : {
 		left : "left",
@@ -190,31 +196,42 @@ $.fn.toolTip = function(options) {
 		}
 
 		// Bind event handler
-		if (options.trigger === "hover") {
-			$(_this).hover(function() {
+		switch(options.trigger){
+			case $.toolTipController.eventType.hover : {
+				$(_this).hover(function() {
+					generateToolTip($(this),index,zIndex);
+				}, function() {
+					hideToolTip(index);
+				});
+				break;
+			}
+			case $.toolTipController.eventType.focus : {
+				$(this).focusin(function(){
+					generateToolTip($(this),index,zIndex);
+				}).focusout(function() {
+					hideToolTip(index);
+				});
+				break;
+			}
+			case $.toolTipController.eventType.loaded : {
 				generateToolTip($(this),index,zIndex);
-			}, function() {
-				hideToolTip(index);
-			});
-		} else if(options.trigger === "focus"){
-			$(this).focusin(function(){
-				generateToolTip($(this),index,zIndex);
-			}).focusout(function() {
-				hideToolTip(index);
-			});
-		}else{
-			$(_this).bind("mouseout " + options.trigger, function(event) {
-				switch(event.type) {
-					case options.trigger : {
-						generateToolTip($(this),index,zIndex);
-						break;
+				break;
+			}
+			default : {
+				$(_this).bind("mouseout " + options.trigger, function(event) {
+					switch(event.type) {
+						case options.trigger : {
+							generateToolTip($(this),index,zIndex);
+							break;
+						}
+						case "mouseout" : {
+							hideToolTip(index);
+							break;
+						}
 					}
-					case "mouseout" : {
-						hideToolTip(index);
-						break;
-					}
-				}
-			});
+				});
+				break;
+			}
 		}
 	});
 
@@ -280,10 +297,11 @@ $.fn.toolTip = function(options) {
 	 * 
 	 * @param {Object} obj : the tooltip object
 	 * @param {Integer} index : current tooltip index
+	 * @param {Integer} zIndex : current tooltip z-index style
 	 */
 	function generateToolTip(obj,index,zIndex) {
 		var title = $.trim($(obj).attr("data-tooltip")), 
-			toolTipContent = null, toolTipPlugin = $(toolTipCacheController.toolTips[index]),
+			toolTipContent = "tooltip content", toolTipPlugin = $(toolTipCacheController.toolTips[index]),
 			toolTip = $('<div class="tooltip-plugin">' +
 							'<div class="tooltip-plugin-content"></div>' + 
 							'<div class="tooltip-outer-triangle">' + 
@@ -300,8 +318,6 @@ $.fn.toolTip = function(options) {
 			toolTipContent = title;
 		} else if (options.content) {
 			toolTipContent = options.content;
-		} else {
-			return;
 		}
 
 		toolTip.find(".tooltip-plugin-content").html(toolTipContent);
