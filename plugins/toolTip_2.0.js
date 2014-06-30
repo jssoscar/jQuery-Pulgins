@@ -86,7 +86,11 @@
  * Version		2.0.4
  * Date			2014-6-9 14:39:55
  * Changelog	.	Add the loaded event : show the tooltip after DOM ready
- * 				.	Optimize the code 
+ * 				.	Optimize the code
+ * 
+ * Version		2.0.5
+ * Date			2014-6-30 17:35:34
+ * Chnagelog		. Fixed the bug when trigger configuration is 'loaded.
  */
 
 /**
@@ -191,9 +195,7 @@ $.fn.toolTip = function(options) {
 	$(this).each(function() {
 		var _this = this,index = -1,zIndex = toolTipCacheController.zIndex++;
 		
-		if(options.cache){
-			index = toolTipCacheController.cacheCount++;
-		}
+		index = toolTipCacheController.cacheCount++;
 
 		// Bind event handler
 		switch(options.trigger){
