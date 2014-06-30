@@ -90,7 +90,7 @@
  * 
  * Version		2.0.5
  * Date			2014-6-30 17:35:34
- * Chnagelog		. Fixed the bug when trigger configuration is 'loaded.
+ * Chnagelog		. Fixed the bug when trigger configuration is 'loaded'.
  */
 
 /**
