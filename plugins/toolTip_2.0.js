@@ -242,6 +242,7 @@ $.fn.toolTip = function(options) {
 	 * 
 	 * @param {Object} toolTipObj : the tooltip object
 	 * @param {Object} toolTip : the tooltip
+	 * @param {Integer} zIndex : current tooltip z-index style
 	 */
 	function calculateDirection(toolTipObj, toolTip, zIndex) {
 		var directionInfo = {
