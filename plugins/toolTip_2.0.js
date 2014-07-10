@@ -90,7 +90,11 @@
  * 
  * Version		2.0.5
  * Date			2014-6-30 17:35:34
- * Chnagelog		. Fixed the bug when trigger configuration is 'loaded'.
+ * Changelog	. Fixed the bug when trigger configuration is 'loaded'.
+ * 
+ * Version		2.0.5.1
+ * Date			2014-7-10 18:26:20
+ * Changelog	.  Fixed the bug for IE 6 'select' element.
  */
 
 /**
@@ -193,9 +197,7 @@ $.fn.toolTip = function(options) {
 
 	// Handler for the tooltip content
 	$(this).each(function() {
-		var _this = this,index = -1,zIndex = toolTipCacheController.zIndex++;
-		
-		index = toolTipCacheController.cacheCount++;
+		var _this = this,index = toolTipCacheController.cacheCount++,zIndex = toolTipCacheController.zIndex++;
 
 		// Bind event handler
 		switch(options.trigger){
@@ -306,10 +308,11 @@ $.fn.toolTip = function(options) {
 		var title = $.trim($(obj).attr("data-tooltip")), 
 			toolTipContent = "tooltip content", toolTipPlugin = $(toolTipCacheController.toolTips[index]),
 			toolTip = $('<div class="tooltip-plugin">' +
+							'<iframe frameBorder="0" class="tooltip-plugin-overlay"></iframe>' + 
 							'<div class="tooltip-plugin-content"></div>' + 
 							'<div class="tooltip-outer-triangle">' + 
 								'<div class="tooltip-inner-triangle"></div>' + 
-								'</div>' + 
+							'</div>' + 
 						'</div>');
 
 		if (toolTipPlugin[0] && options.cache) {
@@ -323,8 +326,13 @@ $.fn.toolTip = function(options) {
 			toolTipContent = options.content;
 		}
 
-		toolTip.find(".tooltip-plugin-content").html(toolTipContent);
-		toolTip.appendTo($("body"));
+		toolTip.find(".tooltip-plugin-content").html(toolTipContent).css({
+			"position" : "relative",
+			"z-index" : zIndex + 1
+		}).end().find(".tooltip-plugin-overlay").css({
+			height: toolTip.outerHeight(),
+			width: toolTip.outerWidth()
+		}).end().appendTo($("body"));
 		toolTipPlugin = $(".tooltip-plugin_"+index);
 		showToolTip(false,obj,toolTip,index,zIndex);
 	}
