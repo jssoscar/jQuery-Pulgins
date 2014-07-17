@@ -333,7 +333,6 @@ $.fn.toolTip = function(options) {
 			height: toolTip.outerHeight(),
 			width: toolTip.outerWidth()
 		}).end().appendTo($("body"));
-		toolTipPlugin = $(".tooltip-plugin_"+index);
 		showToolTip(false,obj,toolTip,index,zIndex);
 	}
 	
