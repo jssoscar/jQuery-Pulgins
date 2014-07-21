@@ -95,6 +95,21 @@
  * Version		2.0.5.1
  * Date			2014-7-10 18:26:20
  * Changelog	.  Fixed the bug for IE 6 'select' element.
+ * 
+ * Version		2.1
+ * Date			2014-7-21 17:52:57
+ * Changelog	. Add parameter 'closeable' to remove the tooltip.
+ * 				. Add parameter 'closeCallback' to execute the callback when close button clicked.
+ * Usage		$(".tip").toolTip({
+					direction : "left",
+					toolTipStyle : "dark",
+					effect : "fade",
+					cache : true,
+					closeable : true,
+					closeCallback : function(){
+						alert("Close button clicked!");
+					}
+				});
  */
 
 /**
@@ -156,6 +171,8 @@ $.toolTipController = {
  * 		@param {Number} effectSpeed : the effect speed
  * 		@param {Boolean} cache : whether cache the tooltip.Default is "false".
  * 		@param {Object} triangleStyle : the style for the triangle
+ * 		@param {Boolean} closeable : whether the tooltip closeable.Default is false.
+ * 		@param {Function} closeCallback : function to be executed when the close button clicked.
  */
 $.fn.toolTip = function(options) {
 	// Deal with the configuration
@@ -163,13 +180,16 @@ $.fn.toolTip = function(options) {
 		var defaultCfg = {
 			trigger : $.toolTipController.eventType.hover, 
 			direction : "top", 
-			content : null, 
+			content : "", 
 			offset : 12, 
 			toolTipStyle : "default", 
 			effect : "show", 
 			effectSpeed : 0,
 			cache : false,
-			triangleStyle : {}
+			triangleStyle : {},
+			closeable : false,
+			closeCallback : function(){
+			}
 		};
 		$.extend(defaultCfg, options);
 
@@ -222,17 +242,8 @@ $.fn.toolTip = function(options) {
 				break;
 			}
 			default : {
-				$(_this).bind("mouseout " + options.trigger, function(event) {
-					switch(event.type) {
-						case options.trigger : {
-							generateToolTip($(this),index,zIndex);
-							break;
-						}
-						case "mouseout" : {
-							hideToolTip(index);
-							break;
-						}
-					}
+				$(_this).bind(options.trigger, function(event) {
+					generateToolTip($(this),index,zIndex);
 				});
 				break;
 			}
@@ -307,13 +318,25 @@ $.fn.toolTip = function(options) {
 	function generateToolTip(obj,index,zIndex) {
 		var title = $.trim($(obj).attr("data-tooltip")), 
 			toolTipContent = "tooltip content", toolTipPlugin = $(toolTipCacheController.toolTips[index]),
-			toolTip = $('<div class="tooltip-plugin">' +
+			toolTip;
+			if(options.closeable){
+				toolTip = $('<div class="tooltip-plugin">' +
+							'<iframe frameBorder="0" class="tooltip-plugin-overlay"></iframe>' + 
+							'<a href="javascript:void(0)" class="tooltip-plugin-close">&times;</a>' +
+							'<div class="tooltip-plugin-content"></div>' + 
+							'<div class="tooltip-outer-triangle">' + 
+								'<div class="tooltip-inner-triangle"></div>' + 
+							'</div>' + 
+						'</div>');
+			}else{
+				toolTip = $('<div class="tooltip-plugin">' +
 							'<iframe frameBorder="0" class="tooltip-plugin-overlay"></iframe>' + 
 							'<div class="tooltip-plugin-content"></div>' + 
 							'<div class="tooltip-outer-triangle">' + 
 								'<div class="tooltip-inner-triangle"></div>' + 
 							'</div>' + 
 						'</div>');
+			}
 
 		if (toolTipPlugin[0] && options.cache) {
 			showToolTip(true,obj,toolTipPlugin,index,zIndex);
@@ -333,6 +356,13 @@ $.fn.toolTip = function(options) {
 			height: toolTip.outerHeight(),
 			width: toolTip.outerWidth()
 		}).end().appendTo($("body"));
+		
+		if(options.closeable){
+			toolTip.find(".tooltip-plugin-close").css("z-index" , zIndex + 2).click(function(){
+				options.closeCallback && options.closeCallback();
+				$(this).closest(".tooltip-plugin").remove();
+			});
+		}
 		showToolTip(false,obj,toolTip,index,zIndex);
 	}
 	
