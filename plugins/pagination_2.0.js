@@ -9,8 +9,9 @@
  *
  * Version		2.0
  * Date			2014-7-30 12:09:33
- * Changelog	. Fixed the bug if num_edge_entry equal 0
+ * Changelog	. Fixed the bug when num_edge_entry equal 0
  * 				. Optimize the code
+ * 
  */
 
 /**
@@ -137,7 +138,6 @@ Pagination.prototype = {
 			start : start,
 			end : end
 		};
-
 	}
 };
 
@@ -184,5 +184,4 @@ jQuery.fn.pagination = function(totalEntries,options){
 			Pagination(totalEntries, options, $(this));
 		});
 	}
-
 };
