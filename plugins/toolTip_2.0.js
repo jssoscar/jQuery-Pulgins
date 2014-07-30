@@ -110,6 +110,12 @@
 						alert("Close button clicked!");
 					}
 				});
+				
+ * Version		2.2
+ * Date			2014-7-30 19:13:50
+ * Changelog	。 Remove the click event handler
+ * 				. Fixed the bug when event trigger type not supported(generate the closeable button)
+ * 				. Optimize the code
  */
 
 /**
@@ -135,7 +141,6 @@ var toolTipCacheController = {
  */
 $.toolTipController = {
 	eventType : {
-			click : "click",
 			hover : "hover",
 			focus : "focus",
 			loaded : "loaded"
@@ -162,7 +167,7 @@ $.toolTipController = {
  * Define the tooltip function
  *
  * @param {Object} options : the toolitip configuration
- * 		@param {String} trigger : the tooltip trigger event,support hover,focus,click.Default is "hover".
+ * 		@param {String} trigger : the tooltip trigger event,support hover,focus.Default is "hover".
  * 		@param {String} direction : the tooltip direction,support left,right,top,bottom.Default is "top".
  * 		@param {String} content : the tooltip content.Here,support two type : the "data-tooltip" and HTML content.
  * 		@param {Number} offset : the tooltip offset.Default is 12.
@@ -192,11 +197,6 @@ $.fn.toolTip = function(options) {
 			}
 		};
 		$.extend(defaultCfg, options);
-
-		// Deal with the event type
-		if (!$.toolTipController.eventType[defaultCfg.trigger]) {
-			defaultCfg.trigger = $.toolTipController.eventType.hover;
-		}
 
 		// Deal with the direction
 		if (!$.toolTipController.direction[defaultCfg.direction]) {
@@ -319,7 +319,7 @@ $.fn.toolTip = function(options) {
 		var title = $.trim($(obj).attr("data-tooltip")), 
 			toolTipContent = "tooltip content", toolTipPlugin = $(toolTipCacheController.toolTips[index]),
 			toolTip;
-			if(options.closeable){
+			if(options.closeable || !$.toolTipController.eventType[defaultCfg.trigger]){
 				toolTip = $('<div class="tooltip-plugin">' +
 							'<iframe frameBorder="0" class="tooltip-plugin-overlay"></iframe>' + 
 							'<a href="javascript:void(0)" class="tooltip-plugin-close">&times;</a>' +
@@ -360,7 +360,11 @@ $.fn.toolTip = function(options) {
 		if(options.closeable){
 			toolTip.find(".tooltip-plugin-close").css("z-index" , zIndex + 2).click(function(){
 				options.closeCallback && options.closeCallback();
-				$(this).closest(".tooltip-plugin").remove();
+				if(options.cache){
+					$(this).closest(".tooltip-plugin").hide();
+				}else{
+					$(this).closest(".tooltip-plugin").remove();
+				}
 			});
 		}
 		showToolTip(false,obj,toolTip,index,zIndex);
