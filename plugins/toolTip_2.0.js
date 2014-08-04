@@ -113,7 +113,7 @@
 				
  * Version		2.2
  * Date			2014-7-30 19:13:50
- * Changelog	。 Remove the click event handler
+ * Changelog	. Remove the click event handler
  * 				. Fixed the bug when event trigger type not supported(generate the closeable button)
  * 				. Optimize the code
  * 
