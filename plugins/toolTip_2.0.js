@@ -130,6 +130,10 @@
 						top : 10
 					}
 				});
+				
+ * Version		2.3.1
+ * Date			2014-8-4 17:00:55
+ * Changelog	. Fixed the bug when event type not supported
  */
 
 /**
@@ -376,7 +380,7 @@ $.fn.toolTip = function(options) {
 			width: toolTip.outerWidth()
 		}).end().appendTo($("body"));
 		
-		if(options.closeable){
+		if(options.closeable || !$.toolTipController.eventType[options.trigger]){
 			toolTip.find(".tooltip-plugin-close").css("z-index" , zIndex + 2).click(function(){
 				options.closeCallback && options.closeCallback();
 				if(options.cache){
