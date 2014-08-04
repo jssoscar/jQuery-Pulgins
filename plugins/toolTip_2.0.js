@@ -116,6 +116,20 @@
  * Changelog	。 Remove the click event handler
  * 				. Fixed the bug when event trigger type not supported(generate the closeable button)
  * 				. Optimize the code
+ * 
+ * Version		2.3
+ * Date			2014-8-4 16:33:02
+ * Changelog	. Fixed the bug when gennerate the tooltip
+ * 				. Replace the "offset" parameter with "toolTipOffset".
+ * 				. U can define the offset for tooltip.
+ * Usage		$(".tip").toolTip({
+					direction : "left",
+					toolTipStyle : "dark",
+					toolTipOffset : {
+						left : 12,
+						top : 10
+					}
+				});
  */
 
 /**
@@ -170,7 +184,9 @@ $.toolTipController = {
  * 		@param {String} trigger : the tooltip trigger event,support hover,focus.Default is "hover".
  * 		@param {String} direction : the tooltip direction,support left,right,top,bottom.Default is "top".
  * 		@param {String} content : the tooltip content.Here,support two type : the "data-tooltip" and HTML content.
- * 		@param {Number} offset : the tooltip offset.Default is 12.
+ * 		@param {Object} toolTipOffset : the tooltip offset.
+ * 			@param {Integer} left : the left offset
+ * 			@param {Integer} top : the top offset
  * 		@param {String} style : the customer style for the tooltip
  * 		@param {String} effect : the effect for the tooltip.Default is "show".
  * 		@param {Number} effectSpeed : the effect speed
@@ -186,7 +202,10 @@ $.fn.toolTip = function(options) {
 			trigger : $.toolTipController.eventType.hover, 
 			direction : "top", 
 			content : "", 
-			offset : 12, 
+			toolTipOffset : {
+				left : 12,
+				top : 0
+			},
 			toolTipStyle : "default", 
 			effect : "show", 
 			effectSpeed : 0,
@@ -264,37 +283,37 @@ $.fn.toolTip = function(options) {
 		},top, left,winWidth = $(window).width();
 		switch(options.direction) {
 			case "left" : {
-				top = $(toolTipObj).offset().top - $(toolTip).outerHeight() / 2 + $(toolTipObj).outerHeight() / 2;
-				left = $(toolTipObj).offset().left - toolTip.outerWidth() - options.offset;
+				top = $(toolTipObj).offset().top - $(toolTip).outerHeight() / 2 + $(toolTipObj).outerHeight() / 2 - options.toolTipOffset.top;
+				left = $(toolTipObj).offset().left - toolTip.outerWidth() - options.toolTipOffset.left;
 				if(left < 0){
-					left = $(toolTipObj).offset().left + $(toolTipObj).outerWidth() + options.offset;
+					left = $(toolTipObj).offset().left + $(toolTipObj).outerWidth() + options.toolTipOffset.left;
 					directionInfo.direction = "right";
 				}
 				break;
 			}
 			case "right" : {
-				top = $(toolTipObj).offset().top - $(toolTip).outerHeight() / 2 + $(toolTipObj).outerHeight() / 2;
-				left = $(toolTipObj).offset().left + $(toolTipObj).outerWidth() + options.offset;
+				top = $(toolTipObj).offset().top - $(toolTip).outerHeight() / 2 + $(toolTipObj).outerHeight() / 2 - options.toolTipOffset.top;
+				left = $(toolTipObj).offset().left + $(toolTipObj).outerWidth() + options.toolTipOffset.left;
 				if(left > winWidth){
-					left = $(toolTipObj).offset().left - toolTip.outerWidth() - options.offset;
+					left = $(toolTipObj).offset().left - toolTip.outerWidth() - options.toolTipOffset.left;
 					directionInfo.direction = "left";
 				}
 				break;
 			}
 			case "top" : {
-				top = $(toolTipObj).offset().top - options.offset - $(toolTip).outerHeight();
-				left = $(toolTipObj).offset().left - toolTip.outerWidth() / 2 + $(toolTipObj).outerWidth() / 2;
+				top = $(toolTipObj).offset().top - options.toolTipOffset.top - $(toolTip).outerHeight();
+				left = $(toolTipObj).offset().left - toolTip.outerWidth() / 2 + $(toolTipObj).outerWidth() / 2 - options.toolTipOffset.left;
 				if(top < 0){
-					top = $(toolTipObj).offset().top + options.offset + toolTip.outerHeight();
+					top = $(toolTipObj).offset().top + options.toolTipOffset.top + toolTip.outerHeight();
 					directionInfo.direction = "bottom";
 				}
 				break;
 			}
 			case "bottom" : {
-				top = $(toolTipObj).offset().top + options.offset + toolTip.outerHeight();
-				left = $(toolTipObj).offset().left - toolTip.outerWidth() / 2 + $(toolTipObj).outerWidth() / 2;
+				top = $(toolTipObj).offset().top + options.toolTipOffset.top + toolTip.outerHeight();
+				left = $(toolTipObj).offset().left - toolTip.outerWidth() / 2 + $(toolTipObj).outerWidth() / 2 - options.toolTipOffset.left;
 				if(top > winWidth){
-					top = $(toolTipObj).offset().top - options.offset - $(toolTip).outerHeight();
+					top = $(toolTipObj).offset().top - options.toolTipOffset.top - $(toolTip).outerHeight();
 					directionInfo.direction = "top";
 				}
 				break;
@@ -319,7 +338,7 @@ $.fn.toolTip = function(options) {
 		var title = $.trim($(obj).attr("data-tooltip")), 
 			toolTipContent = "tooltip content", toolTipPlugin = $(toolTipCacheController.toolTips[index]),
 			toolTip;
-			if(options.closeable || !$.toolTipController.eventType[defaultCfg.trigger]){
+			if(options.closeable || !$.toolTipController.eventType[options.trigger]){
 				toolTip = $('<div class="tooltip-plugin">' +
 							'<iframe frameBorder="0" class="tooltip-plugin-overlay"></iframe>' + 
 							'<a href="javascript:void(0)" class="tooltip-plugin-close">&times;</a>' +
