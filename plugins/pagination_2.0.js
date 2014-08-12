@@ -12,6 +12,10 @@
  * Changelog	. Fixed the bug when num_edge_entry equal 0
  * 				. Optimize the code
  * 
+ * Version		2.1
+ * Date			2014-8-12 16:53:52
+ * Changelog	. Fixed the bug
+ * 				. Optimize the code
  */
 
 /**
@@ -72,20 +76,20 @@ Pagination.prototype = {
 		// Genereate the start link
 		if(start > num_edge_entry){
 			for(;index <= num_edge_entry;index++){
-				paginationContent.push('<a href="javascript:void(0)" class="prev" data-pager-pageno="' + index + '">' + index + '</a>');
+				paginationContent.push('<a href="javascript:void(0)" data-pager-pageno="' + index + '">' + index + '</a>');
 			}
 			if( (start - num_edge_entry > 1) && ellipse_text && num_edge_entry > 0){
 				paginationContent.push('<span>' + ellipse_text + '</span>');
 			}
 		}else{
 			for(;index < start;index++){
-				paginationContent.push('<a href="javascript:void(0)" class="prev" data-pager-pageno="' + index + '">' + index + '</a>');
+				paginationContent.push('<a href="javascript:void(0)" data-pager-pageno="' + index + '">' + index + '</a>');
 			}
 		}
 		
 		// Generate the pagination link
 		for(var index = start;index <= end;index ++){
-			if(index === this.currentPage){
+			if(index === currentPage){
 				paginationContent.push("<em>" + index + "</em>");
 			}else{
 				paginationContent.push('<a href="javascript:void(0)" data-pager-pageno="' + index + '">' + index + '</a>');
@@ -97,25 +101,24 @@ Pagination.prototype = {
 			if( (totalPage - num_edge_entry - end >= 1) && ellipse_text && num_edge_entry > 0){
 				paginationContent.push('<span>' + ellipse_text + '</span>');
 			}
-			for(index = totalPage - num_edge_entry + 1;index <= this.totalPage;index++){
+			for(index = totalPage - num_edge_entry + 1;index <= totalPage;index++){
 				paginationContent.push('<a href="javascript:void(0)" data-pager-pageno="' + index + '">' + index + '</a>');
 			}
 		}else{
-			for(index = end + 1;index <= this.totalPage;index++){
+			for(index = end + 1;index <= totalPage;index++){
 				paginationContent.push('<a href="javascript:void(0)" data-pager-pageno="' + index + '">' + index + '</a>');
 			}
 		}
 		
-		//Generate "First" and "Previous" link
-		if(currentPage < this.totalPage){
+		//Generate "Next" and "Last" link
+		if(currentPage < totalPage){
 			if(this.options.alwaysShowNext && this.options.next){
-				paginationContent.push('<a href="javascript:void(0)" class="next" data-pager-pageno="' + (this.currentPage + 1) + '">' + this.options.next + '</a>');
+				paginationContent.push('<a href="javascript:void(0)" class="next" data-pager-pageno="' + (currentPage + 1) + '">' + this.options.next + '</a>');
 			}
 			if(this.options.alwaysShowLast&& this.options.last){
-				paginationContent.push('<a href="javascript:void(0)" class="last" data-pager-pageno="' + this.currentPage + '">' + this.options.last + '</a>');
+				paginationContent.push('<a href="javascript:void(0)" class="last" data-pager-pageno="' + totalPage + '">' + this.options.last + '</a>');
 			}
 		}
-		
 		// Generate the content
 		$(this.container).html(paginationContent.join(""));
 	},
@@ -133,7 +136,7 @@ Pagination.prototype = {
 			upperLimit = this.totalPage - this.options.num_displays,
 			currentPage = this.currentPage;
 		start = currentPage > halfPage ? Math.max(Math.min(upperLimit, currentPage - halfPage), 1) : 1;
-		end = currentPage > halfPage ? Math.min(currentPage + halfPage, this.totalPage) - 1 : Math.min(this.options.num_displays, this.totalPage);
+		end = currentPage > halfPage ? Math.min(currentPage + halfPage - 1, this.totalPage) : Math.min(this.options.num_displays, this.totalPage);
 		return {
 			start : start,
 			end : end
@@ -158,7 +161,7 @@ Pagination.prototype = {
  * 		@param {Integer} num_displays : Number of pages to show
  * 		@param {Integer} num_edge_entry : side to display for the Pagination
  * 		@param {String} ellipse_text : the ellipse text
- * 		@param {Function} callback : the callback
+ * 		@param {Function} callback : the callback for the pagination link
  */
 jQuery.fn.pagination = function(totalEntries,options){
 	options = $.extend({
