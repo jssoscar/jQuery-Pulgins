@@ -305,7 +305,7 @@ $.fn.toolTip = function(options) {
 				break;
 			}
 			case "top" : {
-				top = $(toolTipObj).offset().top - options.toolTipOffset.top - $(toolTip).outerHeight();
+				top = $(toolTipObj).offset().top - $(toolTipObj).outerHeight()- options.toolTipOffset.top;
 				left = $(toolTipObj).offset().left - toolTip.outerWidth() / 2 + $(toolTipObj).outerWidth() / 2 - options.toolTipOffset.left;
 				if(top < 0){
 					top = $(toolTipObj).offset().top + options.toolTipOffset.top + toolTip.outerHeight();
@@ -314,7 +314,7 @@ $.fn.toolTip = function(options) {
 				break;
 			}
 			case "bottom" : {
-				top = $(toolTipObj).offset().top + options.toolTipOffset.top + toolTip.outerHeight();
+				top = $(toolTipObj).offset().top + $(toolTipObj).outerHeight()+ options.toolTipOffset.top;
 				left = $(toolTipObj).offset().left - toolTip.outerWidth() / 2 + $(toolTipObj).outerWidth() / 2 - options.toolTipOffset.left;
 				if(top > winWidth){
 					top = $(toolTipObj).offset().top - options.toolTipOffset.top - $(toolTip).outerHeight();
