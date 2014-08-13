@@ -134,6 +134,10 @@
  * Version		2.3.1
  * Date			2014-8-4 17:00:55
  * Changelog	. Fixed the bug when event type not supported
+ * 
+ * Version		2.3.2
+ * Date			2014-8-13 13:44:14
+ * Changelog	. Fixed the bug for direction 'bottom'
  */
 
 /**
@@ -284,7 +288,7 @@ $.fn.toolTip = function(options) {
 		var directionInfo = {
 			direction : options.direction,
 			position : {},
-		},top, left,winWidth = $(window).width();
+		},top, left;
 		switch(options.direction) {
 			case "left" : {
 				top = $(toolTipObj).offset().top - $(toolTip).outerHeight() / 2 + $(toolTipObj).outerHeight() / 2 - options.toolTipOffset.top;
@@ -298,7 +302,7 @@ $.fn.toolTip = function(options) {
 			case "right" : {
 				top = $(toolTipObj).offset().top - $(toolTip).outerHeight() / 2 + $(toolTipObj).outerHeight() / 2 - options.toolTipOffset.top;
 				left = $(toolTipObj).offset().left + $(toolTipObj).outerWidth() + options.toolTipOffset.left;
-				if(left > winWidth){
+				if(left > $(window).width()){
 					left = $(toolTipObj).offset().left - toolTip.outerWidth() - options.toolTipOffset.left;
 					directionInfo.direction = "left";
 				}
@@ -316,7 +320,7 @@ $.fn.toolTip = function(options) {
 			case "bottom" : {
 				top = $(toolTipObj).offset().top + $(toolTipObj).outerHeight()+ options.toolTipOffset.top;
 				left = $(toolTipObj).offset().left - toolTip.outerWidth() / 2 + $(toolTipObj).outerWidth() / 2 - options.toolTipOffset.left;
-				if(top > winWidth){
+				if(top > $(document).height()){
 					top = $(toolTipObj).offset().top - options.toolTipOffset.top - $(toolTip).outerHeight();
 					directionInfo.direction = "top";
 				}
