@@ -25,6 +25,20 @@
  * 					. linkable : whether the pagination linkable
 					. link : the page link
 					. jumpable : whether show the jump text and button
+ * Usage		$(function(){
+				 	$(".pager").pagination(7,{
+						currentPage : 8,
+						numEdgeEntry : 3,
+						alwaysShowFirst : true,
+						jumpable : true,
+						linkable : false,
+						link : "{{#page}}.html"
+					});
+				});
+					
+ * Version		2.3
+ * Date			2014-8-28 19:40:10
+ * Changelog	. Optimize the code
  */
 
 /**
@@ -57,6 +71,7 @@ function Pagination(totalEntries, options, container){
  * _render : the render for the pagination
  * _bind : bind event handler for the page link
  * _pageRange : calculate the start and end point for the pagination
+ * _pageLinkGenerator : the page link generator
  */
 Pagination.prototype = {
 	init : function(){
@@ -65,7 +80,7 @@ Pagination.prototype = {
 	},
 	_render : function(){
 		var pageRange = this._pageRange(),
-			paginationContent = ['<span>Total number:' + this.totalEntries + '</span>'],
+			paginationContent = ['<span>Total : ' + this.totalEntries + '</span>'],
 			options = this.options,
 			halfPage = Math.ceil(options.numDisplays / 2),
 			start = pageRange.start,
@@ -76,108 +91,60 @@ Pagination.prototype = {
 			totalPage = this.totalPage,
 			ellipseText = options.ellipseText,
 			linkable = options.linkable,
-			link = options.link;
+			link = options.link,
+			edgeEntry;
 			
 		// Generate "First" and "Previous" link
 		
 		if (currentPage > 1) {
 			if (options.showFirst) {
-				var href = linkable ? link.replace(/{{#page}}/, 1) : "javascript:void(0)";
-				paginationContent.push('<a href="' + href + '" data-pager-pageno="1">' + options.first + '</a>');
+				paginationContent.push('<a href="' + this._pageLinkGenerator(1) + '" data-pager-pageno="1">' + options.first + '</a>');
 			}
 			if (options.showPrev) {
-				var href = linkable ? link.replace(/{{#page}}/, currentPage - 1) : "javascript:void(0)";
-				paginationContent.push('<a href="' + href + '" class="prev" data-pager-pageno="' + (currentPage - 1) + '">' + options.prev + '</a>');
+				paginationContent.push('<a href="' + this._pageLinkGenerator(currentPage - 1) + '" class="prev" data-pager-pageno="' + (currentPage - 1) + '">' + options.prev + '</a>');
 			}
 		}
 
 		// Genereate the start link
-		if (start > numEdgeEntry) {
-			if (linkable) {
-				for (; index <= numEdgeEntry; index++) {
-					paginationContent.push('<a href="' + link.replace(/{{#page}}/, index) + '" data-pager-pageno="' + index + '">' + index + '</a>');
-				}
-			} else {
-				for (; index <= numEdgeEntry; index++) {
-					paginationContent.push('<a href="javascript:void(0)" data-pager-pageno="' + index + '">' + index + '</a>');
-				}
-			}
-			if ((start - numEdgeEntry > 1) && ellipseText && numEdgeEntry > 0) {
+		edgeEntry = start > numEdgeEntry ? numEdgeEntry + 1 : start;
+		for (; index < edgeEntry; index++) {
+			paginationContent.push('<a href="' + this._pageLinkGenerator(index) + '" data-pager-pageno="' + index + '">' + index + '</a>');
+		}
+		if (start > numEdgeEntry && (start - numEdgeEntry > 1) && ellipseText && numEdgeEntry > 0) {
 				paginationContent.push('<span>' + ellipseText + '</span>');
-			}
-		} else {
-			if (linkable) {
-				for (; index < start; index++) {
-					paginationContent.push('<a href="' + link.replace(/{{#page}}/, index) + '" data-pager-pageno="' + index + '">' + index + '</a>');
-				}
-			} else {
-				for (; index < start; index++) {
-					paginationContent.push('<a href="javascript:void(0)" data-pager-pageno="' + index + '">' + index + '</a>');
-				}
-			}
-
 		}
 
 		// Generate the pagination link
-		if (linkable) {
-			for (var index = start; index <= end; index++) {
-				if (index === currentPage) {
-					paginationContent.push("<em>" + index + "</em>");
-				} else {
-					paginationContent.push('<a href="' + link.replace(/{{#page}}/, index) + '" data-pager-pageno="' + index + '">' + index + '</a>');
-				}
-			}
-		} else {
-			for (var index = start; index <= end; index++) {
-				if (index === currentPage) {
-					paginationContent.push("<em>" + index + "</em>");
-				} else {
-					paginationContent.push('<a href="javascript:void(0)" data-pager-pageno="' + index + '">' + index + '</a>');
-				}
+		for (var index = start; index <= end; index++) {
+			if (index === currentPage) {
+				paginationContent.push("<em>" + index + "</em>");
+			} else {
+				paginationContent.push('<a href="' + this._pageLinkGenerator(index) + '" data-pager-pageno="' + index + '">' + index + '</a>');
 			}
 		}
 
 		// Generate the end link
-		if (end < totalPage - numEdgeEntry) {
-			if ((totalPage - numEdgeEntry - end >= 1) && ellipseText && numEdgeEntry > 0) {
-				paginationContent.push('<span>' + ellipseText + '</span>');
-			}
-			if (linkable) {
-				for ( index = totalPage - numEdgeEntry + 1; index <= totalPage; index++) {
-					paginationContent.push('<a href="' + link.replace(/{{#page}}/, index) + '" data-pager-pageno="' + index + '">' + index + '</a>');
-				}
-			} else {
-				for ( index = totalPage - numEdgeEntry + 1; index <= totalPage; index++) {
-					paginationContent.push('<a href="javascript:void(0)" data-pager-pageno="' + index + '">' + index + '</a>');
-				}
-			}
-		} else {
-			if (linkable) {
-				for ( index = totalPage - numEdgeEntry + 1; index <= totalPage; index++) {
-					paginationContent.push('<a href="' + link.replace(/{{#page}}/, index) + '" data-pager-pageno="' + index + '">' + index + '</a>');
-				}
-			} else {
-				for ( index = end + 1; index <= totalPage; index++) {
-					paginationContent.push('<a href="javascript:void(0)" data-pager-pageno="' + index + '">' + index + '</a>');
-				}
-			}
+		edgeEntry = end < totalPage - numEdgeEntry ? totalPage - numEdgeEntry + 1 : end + 1;
+		if (end < totalPage - numEdgeEntry && (totalPage - numEdgeEntry - end >= 1) && ellipseText && numEdgeEntry > 0) {
+			paginationContent.push('<span>' + ellipseText + '</span>');
+		}
+		for ( index = edgeEntry; index <= totalPage; index++) {
+			paginationContent.push('<a href="' + this._pageLinkGenerator(index) + '" data-pager-pageno="' + index + '">' + index + '</a>');
 		}
 
 		// Generate "Next" and "Last" link
 		if (currentPage < totalPage) {
 			if (options.showNext) {
-				var href = linkable ? link.replace(/{{#page}}/, currentPage + 1) : "javascript:void(0)";
-				paginationContent.push('<a href="' + href + '" class="next" data-pager-pageno="' + (currentPage + 1) + '">' + options.next + '</a>');
+				paginationContent.push('<a href="' + this._pageLinkGenerator(currentPage + 1) + '" class="next" data-pager-pageno="' + (currentPage + 1) + '">' + options.next + '</a>');
 			}
 			if (options.showLast) {
-				var href = linkable ? link.replace(/{{#page}}/, totalPage) : "javascript:void(0)";
-				paginationContent.push('<a href="' + href + '" class="last" data-pager-pageno="' + totalPage + '">' + options.last + '</a>');
+				paginationContent.push('<a href="' + this._pageLinkGenerator(totalPage) + '" class="last" data-pager-pageno="' + totalPage + '">' + options.last + '</a>');
 			}
 		}
 
 		// Generate the jump area
 		if (options.jumpable) {
-			paginationContent.push('<span>To</span><input type="text" class="pagination_plugin_jump">page<input type="button" class="pagination_plugin_button" value="Confirm">');
+			paginationContent.push('<span>To</span><input type="text" class="pagination_plugin_jump"><input type="button" class="pagination_plugin_button" value="Confirm">');
 		}
 		
 		// Generate the content
@@ -227,10 +194,15 @@ Pagination.prototype = {
 			start : start,
 			end : end
 		};
+	},
+	_pageLinkGenerator : function(pageNum){
+		var options = this.options;
+		return options.linkable ? options.link.replace(/{{#page}}/, pageNum) : "javascript:void(0)";
 	}
 };
 
 /**
+ * The pagination plugin
  * 
  * @param {Integer} totalEntries : the total entries
  * @param {Object} options : the configuration for the Pagination
@@ -249,7 +221,7 @@ Pagination.prototype = {
  * 		@param {String} ellipseText : the ellipse text
  * 		@param {Function} callback : the callback
  * 		@param {Boolean} linkable : whether the pagination linkable
- * 		@param {String} link : the link for the pagination
+ * 		@param {String} link : the link for the pagination.If the parameter 'linkable' is 'true',ensure this parameter contains '{{#page}}'
  */
 jQuery.fn.pagination = function(totalEntries,options){
 	options = $.extend({
