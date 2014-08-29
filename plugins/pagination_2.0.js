@@ -197,7 +197,15 @@ Pagination.prototype = {
 	},
 	_pageLinkGenerator : function(pageNum){
 		var options = this.options;
-		return options.linkable ? options.link.replace(/{{#page}}/, pageNum) : "javascript:void(0)";
+		if(options.linkable){
+			if(/{{#page}}/.test(options.link)){
+				return options.link.replace(/{{#page}}/, pageNum);
+			}else{
+				return options.link;
+			}
+		}else{
+			return "javascript:void(0)";
+		}
 	}
 };
 
