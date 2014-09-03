@@ -26,19 +26,37 @@
 					. link : the page link
 					. jumpable : whether show the jump text and button
  * Usage		$(function(){
-				 	$(".pager").pagination(7,{
+				 	$(".pager").pagination({
+				 		totalEntries : 200,
 						currentPage : 8,
 						numEdgeEntry : 3,
 						alwaysShowFirst : true,
 						jumpable : true,
 						linkable : false,
-						link : "{{#page}}.html"
+						link : "{{page}}.html"
 					});
 				});
 					
  * Version		2.3
  * Date			2014-8-28 19:40:10
  * Changelog	. Optimize the code
+ * 
+ * Version		2.4
+ * Date			2014-9-2 11:18:18
+ * Changelog	. Optimize the code
+ * 				. Add parameter 'showTotalInfo'
+ * 				. Add parameter 'showTotalpage'
+ * Usage		$(function(){
+				 	$(".pager").pagination({
+				 		totalEntries : 7,
+						currentPage : 8,
+						numEdgeEntry : 3,
+						alwaysShowFirst : true,
+						jumpable : true,
+						linkable : false,
+						link : "{{page}}.html"
+					});
+				});
  */
 
 /**
@@ -48,29 +66,29 @@
  * @param {Object} options : the configuration for the pagination plugin
  * @param {Object} container : the container for the pagination
  */
-function Pagination(totalEntries, options, container){
+function Pagination(options, container){
 	if(this instanceof Pagination){
-		this.totalEntries = totalEntries;
 		this.options = options;
 		this.container = container;
-		this.totalPage = Math.ceil(this.totalEntries / this.options.pageSize);
+		this.totalPage = Math.ceil(options.totalEntries / this.options.pageSize);
 		if(this.totalPage <= 0){
 			this.totalPage = 1;
 		}
 		this.currentPage = options.currentPage;
 		this.init();
 	}else{
-		return new Pagination(totalEntries, options, container);
+		return new Pagination(options, container);
 	}
 }
 
 /**
- * The prototype for the Pagination model
+ * The prototype for the pagination model
  * 
  * init : initialize the pagination
  * _render : the render for the pagination
  * _bind : bind event handler for the page link
  * _pageRange : calculate the start and end point for the pagination
+ * _bind : event handler for the pagination
  * _pageLinkGenerator : the page link generator
  */
 Pagination.prototype = {
@@ -80,8 +98,8 @@ Pagination.prototype = {
 	},
 	_render : function(){
 		var pageRange = this._pageRange(),
-			paginationContent = ['<span>Total : ' + this.totalEntries + '</span>'],
 			options = this.options,
+			paginationContent = [],
 			halfPage = Math.ceil(options.numDisplays / 2),
 			start = pageRange.start,
 			end = pageRange.end,
@@ -94,8 +112,12 @@ Pagination.prototype = {
 			link = options.link,
 			edgeEntry;
 			
+		// Generate total info
+		if(options.showTotalInfo){
+			paginationContent.push('<span>Items: ' + options.totalEntries + '</span>');
+		}
+			
 		// Generate "First" and "Previous" link
-		
 		if (currentPage > 1) {
 			if (options.showFirst) {
 				paginationContent.push('<a href="' + this._pageLinkGenerator(1) + '" data-pager-pageno="1">' + options.first + '</a>');
@@ -110,7 +132,7 @@ Pagination.prototype = {
 		for (; index < edgeEntry; index++) {
 			paginationContent.push('<a href="' + this._pageLinkGenerator(index) + '" data-pager-pageno="' + index + '">' + index + '</a>');
 		}
-		if (start > numEdgeEntry && (start - numEdgeEntry > 1) && ellipseText && numEdgeEntry > 0) {
+		if ( (start - numEdgeEntry > 1) && ellipseText) {
 				paginationContent.push('<span>' + ellipseText + '</span>');
 		}
 
@@ -125,7 +147,7 @@ Pagination.prototype = {
 
 		// Generate the end link
 		edgeEntry = end < totalPage - numEdgeEntry ? totalPage - numEdgeEntry + 1 : end + 1;
-		if (end < totalPage - numEdgeEntry && (totalPage - numEdgeEntry - end >= 1) && ellipseText && numEdgeEntry > 0) {
+		if ((totalPage - numEdgeEntry - end >= 1) && ellipseText) {
 			paginationContent.push('<span>' + ellipseText + '</span>');
 		}
 		for ( index = edgeEntry; index <= totalPage; index++) {
@@ -145,6 +167,11 @@ Pagination.prototype = {
 		// Generate the jump area
 		if (options.jumpable) {
 			paginationContent.push('<span>To</span><input type="text" class="pagination_plugin_jump"><input type="button" class="pagination_plugin_button" value="Confirm">');
+		}
+		
+		// Generate the total page
+		if(options.showTotalPage){
+			paginationContent.push('<span>Pages :' + totalPage + '</span>');
 		}
 		
 		// Generate the content
@@ -188,61 +215,57 @@ Pagination.prototype = {
 			halfPage = Math.ceil(this.options.numDisplays / 2), 
 			upperLimit = this.totalPage - this.options.numDisplays,
 			currentPage = this.currentPage;
-		start = currentPage > halfPage ? Math.max(Math.min(upperLimit, currentPage - halfPage), 1) : 1;
-		end = currentPage > halfPage ? Math.min(currentPage + halfPage - 1, this.totalPage) : Math.min(this.options.numDisplays, this.totalPage);
+		start = currentPage > halfPage ? Math.max(Math.min(upperLimit + 1, currentPage - halfPage), 1) : 1;
+		end = currentPage > halfPage ? Math.min(currentPage + halfPage + 1, this.totalPage) : Math.min(this.options.numDisplays, this.totalPage);
 		return {
 			start : start,
 			end : end
 		};
 	},
 	_pageLinkGenerator : function(pageNum){
-		var options = this.options;
-		if(options.linkable){
-			if(/{{#page}}/.test(options.link)){
-				return options.link.replace(/{{#page}}/, pageNum);
-			}else{
-				return options.link;
-			}
-		}else{
-			return "javascript:void(0)";
-		}
+		return this.options.linkable ? this.options.link.replace(/{{page}}/, pageNum) : "javascript:void(0)";
 	}
 };
 
 /**
  * The pagination plugin
  * 
- * @param {Integer} totalEntries : the total entries
- * @param {Object} options : the configuration for the Pagination
+ * @param {Object} options : the configuration for the pagination
+ * 		@param {Integer} totalEntries : the total entries
  * 		@param {Integer} pageSize : the pageSize
  * 		@param {String} first : the text for the first page button
  * 		@param {String} last : the text for the last page button
  * 		@param {String} prev : the text for the previous button
  * 		@param {String} next : the next for the next button
  * 		@param {Integer} currentPage : current page index
- * 		@param {Boolean} showFirst : whether always show the first page button
- * 		@param {Boolean} showLast : whether always show the last page button
- * 		@param {Boolean} showPrev : whether always show the previous page button
- * 		@param {Boolean} showNext : whether always show the next page button
+ * 		@param {Boolean} showTotalInfo : whether show the total info
+ * 		@param {Boolean} showFirst : whether show the first page
+ * 		@param {Boolean} showLast : whether show the last page
+ * 		@param {Boolean} showPrev : whether show the previous page
+ * 		@param {Boolean} showNext : whether show the next page
+ * 		@param {Boolean} showTotalPage : whether show the total page info
  * 		@param {Integer} numDisplays : Number of pages to show
  * 		@param {Integer} numEdgeEntry : side to display for the pagination
  * 		@param {String} ellipseText : the ellipse text
  * 		@param {Function} callback : the callback
  * 		@param {Boolean} linkable : whether the pagination linkable
- * 		@param {String} link : the link for the pagination.If the parameter 'linkable' is 'true',ensure this parameter contains '{{#page}}'
+ * 		@param {String} link : the link for the pagination.If the parameter 'linkable' is 'true',ensure this parameter contains '{{page}}'
  */
-jQuery.fn.pagination = function(totalEntries,options){
+jQuery.fn.pagination = function(options){
 	options = $.extend({
+		totalEntries : 0,
 		pageSize : 10,
-		first : "First",
-		last : "Last",
-		prev : "Prev",
-		next : "Next",
+		first : "首页",
+		last : "末页",
+		prev : "上一页",
+		next : "下一页",
 		currentPage : 1,
+		showTotalInfo : true,
 		showFirst : true,
 		showLast : true,
 		showPrev : true,
 		showNext : true,
+		showTotalPage : true,
 		numDisplays : 6,
 		numEdgeEntry : 1,
 		ellipseText : "...",
@@ -255,6 +278,6 @@ jQuery.fn.pagination = function(totalEntries,options){
 	}, options || {});
 
 	this.each(function() {
-		Pagination(totalEntries, options, $(this));
+		Pagination(options, $(this));
 	});
 };
