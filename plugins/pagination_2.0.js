@@ -57,12 +57,19 @@
 						link : "{{page}}.html"
 					});
 				});
+				
+ * Version		2.4.1
+ * Date			2014-9-15 10:49:29
+ * Changelog	. Fixed the bug : bind event handler
+ * 
+ * Version		2.4.2
+ * Date			2014-9-23 16:17:04
+ * Changelog	. Optimize the code
  */
 
 /**
  * The Pagination model
  * 
- * @param {Integer} totalEntries : total entries
  * @param {Object} options : the configuration for the pagination plugin
  * @param {Object} container : the container for the pagination
  */
@@ -181,15 +188,17 @@ Pagination.prototype = {
 		var $this = this,
 			container = $($this.container),
 			options = $this.options;
-		container.delegate("a","click",function(){
+		container.undelegate("a","click").delegate("a","click",function(){
 			var currentPage = parseInt($(this).attr("data-pager-pageno"),10);
-			$this.currentPage = currentPage;
-			$this._render();
-			options.callback && options.callback(currentPage);
+			if(currentPage !== $this.currentPage){
+				$this.currentPage = currentPage;
+				$this._render();
+				options.callback && options.callback(currentPage);
+			}
 		});
 		
 		if($this.options.jumpable){
-			container.delegate(".pagination_plugin_button","click",function(){
+			container.undelegate(".pagination_plugin_button","click").delegate(".pagination_plugin_button","click",function(){
 				var jumpValue = $.trim(container.find(".pagination_plugin_jump").val());
 				if(jumpValue !== ""){
 					jumpValue = parseInt(jumpValue,10);
@@ -202,7 +211,7 @@ Pagination.prototype = {
 						options.callback && options.callback(jumpValue);
 					}
 				}
-			}).delegate(".pagination_plugin_jump","keyup keydown",function(event){
+			}).undelegate(".pagination_plugin_jump","keyup keydown").delegate(".pagination_plugin_jump","keyup keydown",function(event){
 				var keyCode = event.keyCode;
 				if( (keyCode < 48 && keyCode !== 8) || keyCode > 57){
 					event.preventDefault();
