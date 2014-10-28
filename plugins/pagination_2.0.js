@@ -65,6 +65,12 @@
  * Version		2.4.2
  * Date			2014-9-23 16:17:04
  * Changelog	. Optimize the code
+ * 
+ * Version		2.5
+ * Date			2014-10-28 17:09:28
+ * Changelog	. Optimize the code
+ * 				. Replace the key event by blur event for the jumpable input node
+ * 				. Add 'placeholder' attribut for the jumpable input
  */
 
 /**
@@ -173,7 +179,7 @@ Pagination.prototype = {
 
 		// Generate the jump area
 		if (options.jumpable) {
-			paginationContent.push('<span>To</span><input type="text" class="pagination_plugin_jump"><input type="button" class="pagination_plugin_button" value="Confirm">');
+			paginationContent.push('<span>To</span><input type="text" class="pagination_plugin_jump" placeholder="Page Index"><input type="button" class="pagination_plugin_button" value="Confirm">');
 		}
 		
 		// Generate the total page
@@ -198,7 +204,7 @@ Pagination.prototype = {
 		});
 		
 		if($this.options.jumpable){
-			container.undelegate(".pagination_plugin_button","click").delegate(".pagination_plugin_button","click",function(){
+			container.delegate(".pagination_plugin_button","click",function(){
 				var jumpValue = $.trim(container.find(".pagination_plugin_jump").val());
 				if(jumpValue !== ""){
 					jumpValue = parseInt(jumpValue,10);
@@ -211,10 +217,10 @@ Pagination.prototype = {
 						options.callback && options.callback(jumpValue);
 					}
 				}
-			}).undelegate(".pagination_plugin_jump","keyup keydown").delegate(".pagination_plugin_jump","keyup keydown",function(event){
-				var keyCode = event.keyCode;
-				if( (keyCode < 48 && keyCode !== 8) || keyCode > 57){
-					event.preventDefault();
+			}).delegate(".pagination_plugin_jump","blur",function(event){
+				var val = $(this).val();
+				if(!/^\d$/.test(val)){
+					$(this).val("");
 				}
 			});
 		}
