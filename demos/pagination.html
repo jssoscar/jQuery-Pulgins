@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+		<title>pagination</title>
+		<script type="text/javascript" src="http://qunarzz.com/jquery/prd/jquery-1.7.2.js"></script>
+		<script type="text/javascript" src="pagination_2.0.js"></script>
+		<style>
+			.pager{margin: 50px 50px;clear: both}
+			a,em,span{display: block;float: left;padding: 0.3em 0.5em;margin-right: 5px;margin-bottom: 5px;}
+			a{text-decoration: none;border: solid 1px #AAE;color: #15B;}
+			em{background: #26B;color: #fff;border: solid 1px #AAE;font-family:  tahoma;}
+		</style>
+	</head>
+	<body>
+		<div class="pager">
+		</div>
+		<script>
+			$(function(){
+				$(".pager").pagination({
+					totalEntries : 100,
+					currentPage : 1,
+					numEdgeEntry : 3,
+					numDisplays : 6,
+					showTotalInfo : true,
+					showFirst : true,
+					jumpable : false,
+					linkable : false,
+					link : "{{#page}}.html"
+				});
+			});
+		</script>
+	</body>
+</html>
