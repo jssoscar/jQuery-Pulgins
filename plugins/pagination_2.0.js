@@ -219,7 +219,7 @@ Pagination.prototype = {
 				}
 			}).delegate(".pagination_plugin_jump","blur",function(event){
 				var val = $(this).val();
-				if(!/^\d$/.test(val)){
+				if(!/^\d+$/.test(val)){
 					$(this).val("");
 				}
 			});
@@ -270,10 +270,10 @@ jQuery.fn.pagination = function(options){
 	options = $.extend({
 		totalEntries : 0,
 		pageSize : 10,
-		first : "首页",
-		last : "末页",
-		prev : "上一页",
-		next : "下一页",
+		first : "First",
+		last : "Last",
+		prev : "Prev",
+		next : "Next",
 		currentPage : 1,
 		showTotalInfo : true,
 		showFirst : true,
