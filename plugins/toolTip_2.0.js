@@ -135,9 +135,15 @@
  * Date			2014-8-4 17:00:55
  * Changelog	. Fixed the bug when event type not supported
  * 
- * Version		2.3.2
- * Date			2014-8-13 13:44:14
- * Changelog	. Fixed the bug for direction 'bottom'
+ * Version		2.4
+ * Date			2014-11-26 16:36:30
+ * Changelog	. Fixed the bug for calculate the overlay height and width attribute
+ * 				. Add parameter 'toolTipAttr' for the configuration.The default is 'data-tooltip'
+ * Usage		$(".tip").toolTip({
+					direction : "left",
+					toolTipStyle : "dark",
+					toolTipAttr : "data-tip"
+				});
  */
 
 /**
@@ -150,7 +156,10 @@
 var toolTipCacheController = {
 	cacheCount : 0,
 	zIndex : 99999,
-	toolTips : {}
+	toolTips : {},
+	isIE6 : (function(){
+		return $.browser.msie && $.browser.version == "6.0";
+	})()
 };
 
 /**
@@ -191,7 +200,7 @@ $.toolTipController = {
  * @param {Object} options : the toolitip configuration
  * 		@param {String} trigger : the tooltip trigger event,support hover,focus.Default is "hover".
  * 		@param {String} direction : the tooltip direction,support left,right,top,bottom.Default is "top".
- * 		@param {String} content : the tooltip content.Here,support two type : the "data-tooltip" and HTML content.
+ * 		@param {String} content : the tooltip content.Here,support two type : the configuration parameter 'toolTipAttr' and HTML content.
  * 		@param {Object} toolTipOffset : the tooltip offset.
  * 			@param {Integer} left : the left offset
  * 			@param {Integer} top : the top offset
@@ -209,6 +218,7 @@ $.fn.toolTip = function(options) {
 		var defaultCfg = {
 			trigger : $.toolTipController.eventType.hover, 
 			direction : "top", 
+			toolTipAttr : "data-tooltip",
 			content : "", 
 			toolTipOffset : {
 				left : 12,
@@ -288,7 +298,7 @@ $.fn.toolTip = function(options) {
 		var directionInfo = {
 			direction : options.direction,
 			position : {},
-		},top, left;
+		},top, left,winWidth = $(window).width();
 		switch(options.direction) {
 			case "left" : {
 				top = $(toolTipObj).offset().top - $(toolTip).outerHeight() / 2 + $(toolTipObj).outerHeight() / 2 - options.toolTipOffset.top;
@@ -302,7 +312,7 @@ $.fn.toolTip = function(options) {
 			case "right" : {
 				top = $(toolTipObj).offset().top - $(toolTip).outerHeight() / 2 + $(toolTipObj).outerHeight() / 2 - options.toolTipOffset.top;
 				left = $(toolTipObj).offset().left + $(toolTipObj).outerWidth() + options.toolTipOffset.left;
-				if(left > $(window).width()){
+				if(left > winWidth){
 					left = $(toolTipObj).offset().left - toolTip.outerWidth() - options.toolTipOffset.left;
 					directionInfo.direction = "left";
 				}
@@ -320,7 +330,7 @@ $.fn.toolTip = function(options) {
 			case "bottom" : {
 				top = $(toolTipObj).offset().top + $(toolTipObj).outerHeight()+ options.toolTipOffset.top;
 				left = $(toolTipObj).offset().left - toolTip.outerWidth() / 2 + $(toolTipObj).outerWidth() / 2 - options.toolTipOffset.left;
-				if(top > $(document).height()){
+				if(top > winWidth){
 					top = $(toolTipObj).offset().top - options.toolTipOffset.top - $(toolTip).outerHeight();
 					directionInfo.direction = "top";
 				}
@@ -343,27 +353,25 @@ $.fn.toolTip = function(options) {
 	 * @param {Integer} zIndex : current tooltip z-index style
 	 */
 	function generateToolTip(obj,index,zIndex) {
-		var title = $.trim($(obj).attr("data-tooltip")), 
-			toolTipContent = "tooltip content", toolTipPlugin = $(toolTipCacheController.toolTips[index]),
-			toolTip;
-			if(options.closeable || !$.toolTipController.eventType[options.trigger]){
-				toolTip = $('<div class="tooltip-plugin">' +
-							'<iframe frameBorder="0" class="tooltip-plugin-overlay"></iframe>' + 
-							'<a href="javascript:void(0)" class="tooltip-plugin-close">&times;</a>' +
-							'<div class="tooltip-plugin-content"></div>' + 
-							'<div class="tooltip-outer-triangle">' + 
-								'<div class="tooltip-inner-triangle"></div>' + 
-							'</div>' + 
-						'</div>');
-			}else{
-				toolTip = $('<div class="tooltip-plugin">' +
-							'<iframe frameBorder="0" class="tooltip-plugin-overlay"></iframe>' + 
-							'<div class="tooltip-plugin-content"></div>' + 
-							'<div class="tooltip-outer-triangle">' + 
-								'<div class="tooltip-inner-triangle"></div>' + 
-							'</div>' + 
-						'</div>');
-			}
+		var title = $.trim($(obj).attr(options.toolTipAttr)), 
+			toolTipContent = "tooltip content", 
+			toolTipPlugin = $(toolTipCacheController.toolTips[index]),
+			toolTip,
+			content = ['<div class="tooltip-plugin">'];
+			
+		if(toolTipCacheController.isIE6){
+			content.push('<iframe frameBorder="0" class="tooltip-plugin-overlay"></iframe>');
+		}else{
+			content.push('<div class="tooltip-plugin-overlay"></div>');
+		}
+		
+		if(options.closeable || !$.toolTipController.eventType[options.trigger]){
+			content.push('<a href="javascript:void(0)" class="tooltip-plugin-close">&times;</a>');
+		}
+		content.push('<div class="tooltip-plugin-content"></div>');
+		content.push('<div class="tooltip-outer-triangle"><div class="tooltip-inner-triangle"></div></div>');
+		content.push('</div>');
+		toolTip = $(content.join(""));
 
 		if (toolTipPlugin[0] && options.cache) {
 			showToolTip(true,obj,toolTipPlugin,index,zIndex);
@@ -375,14 +383,14 @@ $.fn.toolTip = function(options) {
 		} else if (options.content) {
 			toolTipContent = options.content;
 		}
-
+		
 		toolTip.find(".tooltip-plugin-content").html(toolTipContent).css({
 			"position" : "relative",
 			"z-index" : zIndex + 1
-		}).end().find(".tooltip-plugin-overlay").css({
+		}).end().appendTo($("body")).find(".tooltip-plugin-overlay").css({
 			height: toolTip.outerHeight(),
 			width: toolTip.outerWidth()
-		}).end().appendTo($("body"));
+		});
 		
 		if(options.closeable || !$.toolTipController.eventType[options.trigger]){
 			toolTip.find(".tooltip-plugin-close").css("z-index" , zIndex + 2).click(function(){
@@ -403,8 +411,8 @@ $.fn.toolTip = function(options) {
 	 * @param {Boolean} toolTipExist : whether the tooltip exist
 	 * @param {Object} toolTipObj : the node for tooltip
 	 * @param {Object} toolTip : the tool tip object
-	 * @param {Number} index : current tooltip index
-	 * @param {Number} zIndex : current element z-index
+	 * @param {Integer} index : current tooltip index
+	 * @param {Integer} zIndex : current element z-index
  	 */
 	function showToolTip(toolTipExist,toolTipObj,toolTip,index,zIndex){
 		var directionInfo = calculateDirection(toolTipObj, toolTip,zIndex);
