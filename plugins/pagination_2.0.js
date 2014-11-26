@@ -30,7 +30,6 @@
 				 		totalEntries : 200,
 						currentPage : 8,
 						numEdgeEntry : 3,
-						alwaysShowFirst : true,
 						jumpable : true,
 						linkable : false,
 						link : "{{page}}.html"
@@ -51,7 +50,6 @@
 				 		totalEntries : 7,
 						currentPage : 8,
 						numEdgeEntry : 3,
-						alwaysShowFirst : true,
 						jumpable : true,
 						linkable : false,
 						link : "{{page}}.html"
@@ -70,7 +68,7 @@
  * Date			2014-10-28 17:09:28
  * Changelog	. Optimize the code
  * 				. Replace the key event by blur event for the jumpable input node
- * 				. Add 'placeholder' attribut for the jumpable input
+ * 				. Add 'placeholder' attribute for the jumpable input
  */
 
 /**
